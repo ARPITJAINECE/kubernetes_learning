@@ -1,0 +1,15 @@
+# ---------Create a new pod with the name redis and the image redis123.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: redis
+  labels:
+    app: redis
+    env: dev
+spec:
+  containers:
+    - name: redis
+      image: redis123
+      ports:
+        - containerPort: 6379
