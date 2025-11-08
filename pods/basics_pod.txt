@@ -1,0 +1,13 @@
+Smallest deployable unit in Kubernetes.
+
+Contains one or more containers.
+
+Containers share network, storage, and configurations.
+
+Usually runs a single app instance.
+
+Managed automatically by Kubernetes.
+
+Enables easy scaling, restarting, and replacement of applications.
+
+Ensures smooth container communication.
