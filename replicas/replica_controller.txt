@@ -1,0 +1,10 @@
+1. Older Kubernetes component that ensures a specified number of pod replicas are running at all times.
+2. If a pod fails or is deleted, RC automatically creates a new one.
+3. Uses label selectors (equality-based) to identify managed pods.
+
+ex: 
+kind: ReplicationController
+spec:
+  replicas: 3
+  selector:
+    app: nginx
