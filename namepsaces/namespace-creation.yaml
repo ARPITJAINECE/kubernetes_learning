@@ -1,0 +1,9 @@
+# this is for creating a namespace in k8s cluster
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: finance
+  labels:
+    environment: development
+    team: frontend

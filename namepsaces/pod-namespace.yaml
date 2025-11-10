@@ -1,0 +1,13 @@
+# this yaml file is for adding a pod in already created namespace.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: redis
+  namespace: finance
+  labels:
+    env: prod
+spec:
+  containers:
+  - name: redis-container
+    image: redis
