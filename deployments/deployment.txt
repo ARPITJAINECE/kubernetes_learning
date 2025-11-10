@@ -1,0 +1,18 @@
+A Deployment is a higher-level controller in Kubernetes.
+It manages ReplicaSets and Pods to ensure your application runs reliably and predictably.
+It defines the desired state (like number of replicas, container image version, etc.).
+Kubernetes automatically makes the actual state match it.
+
+
+
+
+⚙️ Key Use Cases
+Rolling Updates → Update app versions without downtime.
+Rollbacks → Easily revert to previous versions if something breaks.
+Scaling → Increase/decrease replicas dynamically for load management.
+Self-Healing → Automatically replaces failed pods.
+Declarative Management → You describe what you want; Kubernetes handles how to get there.
+
+
+
+A Deployment automates pod updates, scaling, and recovery — ensuring smooth, zero-downtime app delivery and easy version control in Kubernetes.

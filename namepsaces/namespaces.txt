@@ -1,0 +1,20 @@
+A Namespace is a virtual cluster inside a Kubernetes cluster — used to logically separate and organize resources (Pods, Services, Deployments, etc.).
+Think of it as a folder within your cluster, helping you manage environments, access, and resource limits independently.
+
+
+⚙️ Why Namespaces Are Used:
+🧱 Isolation: Separate resources between teams or environments (e.g., dev, test, prod).
+🔒 Access Control: Use Role-Based Access Control (RBAC) per namespace.
+⚖️ Resource Quotas: Limit CPU/memory usage for specific teams or projects.
+🧭 Organization: Keep workloads structured and avoid naming conflicts.
+
+
+Default Namespaces in Kubernetes:
+1. default —
+Used for user-created resources when no namespace is specified. It’s the general workspace for workloads and testing.
+2.kube-system —
+Contains all system-level components and control plane pods such as the API server, scheduler, controller manager, and CoreDNS.
+3. kube-public —
+A publicly readable namespace accessible to all users, even unauthenticated ones. Commonly used to store cluster-wide information or configs.
+4. kube-node-lease —
+Holds lease objects that record heartbeat data from each node, helping the control plane detect node health and status efficiently.
