@@ -1,0 +1,1 @@
+way to set environment variables in k8s is : 

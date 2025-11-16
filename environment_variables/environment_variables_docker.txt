@@ -1,3 +1,13 @@
 way to set environment variables in docker is : 
 
+1. using -e flag in the command : 
 docker run -d -p 8080:8080 -e username=abcd -e password=efgh ubuntu:latest
+
+
+
+2. using .env file : 
+a. create an .env file : 
+    USERNAME=admin
+    PASSWORD=secret
+b. use that file in docker command : 
+    docker run --env-file .env ubuntu:latest
