@@ -1,0 +1,34 @@
+# ConfigMap YAML (key–value pairs)
+# configmap.yaml
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  APP_MODE: "production"
+  DB_HOST: "mysql-service"
+  LOG_LEVEL: "debug"
+
+
+# Pod Using ConfigMap Values (Environment Variables)
+# pod-env.yaml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-pod
+spec:
+  containers:
+    - name: app
+      image: nginx
+      env:
+        - name: APP_MODE #env variable inside container. 
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: APP_MODE #key inside ConfigMap.data section
+
+
+
+in this value of name and value of key inside pod.yaml file can be different...........
