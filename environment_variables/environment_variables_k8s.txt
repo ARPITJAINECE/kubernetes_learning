@@ -1,1 +1,16 @@
 way to set environment variables in k8s is : 
+
+1. example pod yaml file : 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp
+spec:
+  containers:
+    - name: app
+      image: myimage
+      env:
+        - name: USERNAME
+          value: "admin"
+        - name: PASSWORD
+          value: "secret"
