@@ -1,0 +1,83 @@
+# ConfigMap YAML (key–value pairs)
+# configmap.yaml
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  APP_MODE: "production"
+  DB_HOST: "mysql-service"
+  LOG_LEVEL: "debug"
+
+
+# Pod Using ConfigMap Values (Environment Variables)
+# pod-env.yaml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-pod
+spec:
+  containers:
+    - name: app
+      image: nginx
+      env:
+        - name: APP_MODE
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: APP_MODE
+
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_HOST
+
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: LOG_LEVEL
+
+
+# Pod Using Entire ConfigMap (envFrom)
+# pod-envfrom.yaml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-pod-all-env
+spec:
+  containers:
+    - name: app
+      image: nginx
+      envFrom:
+        - configMapRef:
+            name: app-config
+
+
+# Pod Using ConfigMap as a Mounted File
+# pod-volume.yaml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-pod-volume
+spec:
+  containers:
+    - name: app
+      image: nginx
+      volumeMounts:
+        - name: config-volume
+          mountPath: /etc/appconfig       # directory in container
+  volumes:
+    - name: config-volume
+      configMap:
+        name: app-config
+
+        # This will create files inside the container:
+        # /etc/appconfig/APP_MODE
+        # /etc/appconfig/DB_HOST
+        # /etc/appconfig/LOG_LEVEL
