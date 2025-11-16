@@ -1,0 +1,10 @@
+Q : What is a ConfigMap?
+A ConfigMap stores non-sensitive configuration data (key–value pairs) that your Pods can use without hardcoding values in images.
+
+
+Q : Why ConfigMaps Are Used
+Separates config from code
+Allows updating configs without rebuilding images
+Supports environment variables, config files, and arguments
+Helps manage configuration for multiple environments (dev, staging, prod)
+

@@ -1,0 +1,23 @@
+1. As environment variables
+envFrom:
+  - configMapRef:
+      name: myconfig
+
+
+2. As individual env keys
+env:
+  - name: DB_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: myconfig
+        key: host
+
+
+3. As mounted config files
+volumeMounts:
+  - name: config
+    mountPath: /app/config
+volumes:
+  - name: config
+    configMap:
+      name: myconfig
