@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: resource-demo-pod
+spec:
+  containers:
+    - name: demo-container
+      image: nginx
+      resources:
+        requests:
+          cpu: "250m"      # Pod needs minimum 0.25 CPU to be scheduled
+          memory: "256Mi" # Pod needs minimum 256Mi memory
+        limits:
+          cpu: "500m"      # Pod cannot use more than 0.5 CPU
+          memory: "512Mi"  # Pod is killed if it uses more than 512Mi
