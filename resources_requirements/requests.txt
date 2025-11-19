@@ -1,0 +1,25 @@
+1️⃣ What Are Resource Requests?
+Requests = Minimum amount of CPU and Memory a Pod needs to run.
+
+
+
+---> Kubernetes uses requests to decide:
+1. Where to schedule the Pod
+2. Whether a node has enough resources
+
+
+ex::::::::
+
+If a Pod requests:
+requests:
+  cpu: "200m"
+  memory: "256Mi"
+
+
+
+-------> Kubernetes guarantees:
+It will only place the Pod on a node that has at least 200 millicores CPU + 256Mi Memory free.
+
+
+
+Requests = guaranteed minimum.

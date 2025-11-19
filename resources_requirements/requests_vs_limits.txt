@@ -1,0 +1,4 @@
+3️⃣ Requests vs Limits : 
+Concept	Meaning	Effect
+Requests	Minimum guaranteed resources	Affects scheduling
+Limits	Maximum allowed usage	Affects runtime behavior

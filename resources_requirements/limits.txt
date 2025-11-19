@@ -1,0 +1,10 @@
+2️⃣ What Are Resource Limits?
+Limits = Maximum amount of CPU and Memory a Pod is allowed to use.
+
+
+#####CPU Limit : 
+If a container hits CPU limit → it is throttled (slowed down).
+CPU is compressible → throttling is allowed.
+Memory Limit
+If a container exceeds memory limit → it is OOMKilled (Out of Memory).
+Memory is non-compressible → container is terminated.
