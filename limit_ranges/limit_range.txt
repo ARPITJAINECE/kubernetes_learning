@@ -1,0 +1,9 @@
+-------> What is a LimitRange in Kubernetes?
+A LimitRange is a policy object that sets default and maximum/minimum resource limits for Pods and Containers inside a namespace.
+
+
+######It helps enforce:
+1. Minimum CPU/Memory requests
+2. Maximum CPU/Memory limits
+3. Default CPU/Memory values
+4. Container size constraints

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: team-a-quota
+  namespace: dev
+spec:
+  hard:
+    requests.cpu: "4"           # max total CPU requests across namespace
+    limits.cpu: "8"             # max total CPU limits
+    requests.memory: "8Gi"      # max total memory requests
+    limits.memory: "16Gi"       # max total memory limits
+    pods: "20"                  # max number of Pods
+    services: "10"              # max number of Services
+    configmaps: "15"            # max number of ConfigMaps
+    persistentvolumeclaims: "5" # max number of PVCs

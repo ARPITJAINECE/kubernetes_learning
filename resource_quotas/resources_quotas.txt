@@ -1,0 +1,22 @@
+-------- What is a ResourceQuota in Kubernetes?
+A ResourceQuota is a namespace-level limit that controls how much total resources (CPU, memory, storage, number of objects, etc.) a whole namespace is allowed to use.
+
+Think of it like: “This namespace cannot use more than X CPU, Y memory, and Z number of Pods.”
+
+
+It prevents any team/application from consuming excessive cluster resources.
+
+
+
+
+
+
+
+Why ResourceQuotas Exist?
+
+They are used to:-----
+Prevent resource hogging
+Control total usage by teams/projects
+Protect shared clusters
+Enforce fair usage
+Limit costs
