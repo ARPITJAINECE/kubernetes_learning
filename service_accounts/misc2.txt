@@ -1,0 +1,7 @@
+3️⃣ Where Service Accounts Are Used?
+Inside Pods (automatically)
+In CI/CD pipelines (ArgoCD, Jenkins)
+For internal apps talking to K8s API
+For controllers/operators
+For network plugins, storage, autoscalers
+Every system component in K8s uses a service account, not a user account.

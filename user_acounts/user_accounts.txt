@@ -1,0 +1,21 @@
+1️⃣ What Is a “User Account” in Kubernetes?
+Users = Human users (real people) accessing the cluster.
+
+
+
+Users login using:
+kubeconfig
+tokens from IAM
+certificates
+
+Key points:
+These represent developers, DevOps engineers, admins.
+Kubernetes does NOT store user accounts internally.
+
+
+
+
+
+
+
+👉 Users are external to Kubernetes. They are NOT created using YAML.
