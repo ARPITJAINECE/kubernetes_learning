@@ -1,0 +1,22 @@
+Why Service Accounts Exist? (Most Important Reasons)
+
+
+✔ 1. For Pods to authenticate to Kubernetes API
+Example: a Pod wants to read ConfigMaps or list Pods.
+
+✔ 2. To assign limited permissions using RBAC
+You attach roles and rolebindings to service accounts.
+
+✔ 3. To separate access per application
+App A uses sa-app-a
+App B uses sa-app-b
+Different permissions → better security
+
+✔ 4. For cloud integrations
+Used by:
+ExternalDNS
+ArgoCD
+Prometheus
+Ingress controllers
+Storage drivers
+These Pods MUST use service accounts.

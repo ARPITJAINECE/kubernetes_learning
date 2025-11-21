@@ -1,0 +1,12 @@
+----------How Service Accounts Authenticate : 
+
+Each service account gets:
+A token
+A certificate
+An API endpoint
+Optional secret mounted into the Pod
+
+
+Older K8s versions mounted a token file into Pods.
+
+Newer versions use projected service account tokens (more secure).
