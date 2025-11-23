@@ -1,0 +1,22 @@
+---
+# 1. serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: my-service-account
+  namespace: default
+
+
+
+---
+# 2. pod-using-sa.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-pod
+  namespace: default
+spec:
+  serviceAccountName: my-service-account    # Attach the service account
+  containers:
+    - name: nginx-container
+      image: nginx
