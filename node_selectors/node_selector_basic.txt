@@ -1,0 +1,8 @@
+WHAT IS A NODE SELECTOR?
+A nodeSelector is a Kubernetes mechanism that lets you say:
+
+It means : “Run THIS pod only on nodes that have THIS label.”
+
+
+Kubernetes does NOT automatically understand which node is “high config” or “low config”.
+You must LABEL nodes, then use nodeSelector to place pods.

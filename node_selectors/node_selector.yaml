@@ -1,0 +1,18 @@
+# 1.  Fisrtly, label your nodes : 
+# kubectl label node worker-node1 node-type=high-perf
+# kubectl label node worker-node2 node-type=low-perf
+
+
+
+# 2. Create a pod with node selector:
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-high-perf
+spec:
+  nodeSelector:
+    node-type: high-perf    # Only schedule on high-performance node
+  containers:
+    - name: nginx
+      image: nginx

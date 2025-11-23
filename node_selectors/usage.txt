@@ -1,0 +1,11 @@
+WHY DO WE USE NODE SELECTORS?
+
+Because sometimes you want:
+High-CPU pods to run on high-CPU nodes
+GPU pods to run on GPU-enabled nodes
+Logging pods to run on dedicated logging nodes
+Backend pods to run on private nodes
+Sensitive apps to run on specific availability zones
+
+
+So nodeSelector helps you control where pods must run.
