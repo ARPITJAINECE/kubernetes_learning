@@ -1,0 +1,33 @@
+Q): What are Taints -
+Taint is something you put on a node to say:
+“Don’t schedule Pods here unless they are allowed.”
+It repels Pods from that node.
+
+
+
+
+
+Q): Types of Taint Effects ? 
+
+1️⃣ NoSchedule : 
+Pods without matching tolerations will NOT be scheduled on the node.
+✔ Existing pods stay
+❌ New pods won't land on this node
+Use case: reserve node for specific workloads
+Example: GPU node, logging node, production-only node
+
+2️⃣ PreferNoSchedule
+Kubernetes tries not to schedule pods on this node,
+but will if needed.
+✔ Soft rule
+✔ Best effort
+✔ Used when cluster is low on nodes
+Use case:
+Suggest scheduler to avoid a node, but not enforce it strictly.
+
+3️⃣ NoExecute
+Pods without the toleration are evicted from the node  AND   new ones won’t be scheduled.
+❌ New pods blocked
+❌ Existing pods removed (after 0 or grace period)
+Use case:
+Node unhealthy, node draining, selective eviction.

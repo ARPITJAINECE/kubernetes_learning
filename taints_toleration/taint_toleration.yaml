@@ -1,0 +1,45 @@
+# 1️⃣ Apply a Taint on a Node :
+
+# Format:
+# kubectl taint nodes <node-name> <key>=<value>:<effect>
+
+# Example (add NoSchedule taint):
+# kubectl taint nodes worker-node1 env=prod:NoSchedule
+
+# This means:
+# 👉 Only Pods with matching toleration can schedule on worker-node1.
+
+
+
+
+# 2️⃣ Pod YAML WITH Toleration (so it can run on tainted node)
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tolerant-pod
+spec:
+  tolerations:
+    - key: "env"
+      operator: "Equal"
+      value: "prod"
+      effect: "NoSchedule"
+  containers:
+    - name: nginx
+      image: nginx
+# This pod can run on worker-node1 because it tolerates the taint.
+
+
+
+
+# 3️⃣ Remove a Taint From a Node (CLI)
+
+# Format:
+# kubectl taint nodes <node-name> <key>:<effect>-
+
+# Example (remove the taint we added):
+# kubectl taint nodes worker-node1 env:NoSchedule-
+
+# Note:
+# The trailing dash (-) removes the taint.
+# You do NOT include the value during removal.

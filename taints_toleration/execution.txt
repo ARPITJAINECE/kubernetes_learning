@@ -1,0 +1,68 @@
+STEP 1 — Apply a taint on a node : 
+
+Assume your node name is:
+worker-node1
+
+Apply taint:
+kubectl taint nodes worker-node1 app=demo:NoSchedule
+
+Meaning:
+“Do NOT schedule any Pod on this node unless the Pod tolerates taint app=demo.”
+
+
+
+
+
+EXAMPLE 1 — Pod WITHOUT toleration (will NOT run on tainted node)
+
+pod-no-toleration.yaml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: no-toleration-pod
+spec:
+  nodeName: worker-node1      # Force Pod to try scheduling on tainted node
+  containers:
+    - name: demo
+      image: nginx
+
+🚫 RESULT : 
+This Pod will fail to schedule because:
+Node has taint: app=demo:NoSchedule
+Pod has no toleration
+Pod is forced to worker-node1
+
+Check status:
+kubectl describe pod no-toleration-pod
+
+
+
+
+
+
+
+EXAMPLE 2 — Pod WITH toleration (will run successfully) : 
+
+pod-with-toleration.yaml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: toleration-pod
+spec:
+  nodeName: worker-node1
+  tolerations:
+    - key: "app"
+      operator: "Equal"
+      value: "demo"
+      effect: "NoSchedule"
+  containers:
+    - name: demo
+      image: nginx
+
+
+✅ RESULT : 
+This Pod WILL schedule on worker-node1 because:
+It tolerates the taint: app=demo
+Taint effect is NoSchedule

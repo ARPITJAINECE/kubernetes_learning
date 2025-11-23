@@ -1,0 +1,4 @@
+Q): What are Tolerations - 
+Toleration is something you put on a Pod to say:
+“I am allowed to run on nodes with this taint.”
+It allows Pods to land on tainted nodes.
