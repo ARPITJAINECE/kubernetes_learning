@@ -1,0 +1,42 @@
+1️⃣ WHAT IS NODE AFFINITY?
+Node Affinity is an advanced version of nodeSelector.
+
+nodeSelector = EXACT MATCH (only equals)
+
+---> NodeAffinity = RICH RULES like:
+Must run on nodes with these labels
+Prefer to run on nodes with these labels
+Match multiple values
+Match using logic (In, NotIn, Exists)
+
+👉 Node Affinity = Smarter, flexible placement rules for pods.
+
+
+
+
+
+
+
+
+2️⃣ WHY is Node Affinity needed?
+
+nodeSelector has big limitations:
+No OR conditions
+No NotIn, Exists, DoesNotExist
+No preferences — only strict requirements
+
+
+
+
+
+3️⃣ TWO TYPES OF NODE AFFINITY : 
+
+✔ 1) requiredDuringSchedulingIgnoredDuringExecution
+This is strict.
+“Pod MUST run on nodes matching these rules or it will NOT be scheduled.”
+Equivalent to hard requirement.
+
+✔ 2) preferredDuringSchedulingIgnoredDuringExecution
+This is soft.
+“Prefer these nodes, but if not available, run anywhere.”
+Equivalent to soft preference.

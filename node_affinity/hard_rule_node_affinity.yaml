@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-hard-affinity
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: node-type
+                operator: In
+                values:
+                  - high-perf
+  containers:
+    - name: nginx
+      image: nginx
+
+
+# Meaning:
+# “This Nginx pod MUST run on a node labeled node-type=high-perf.”
+# If no such node exists → pod stays Pending forever.
