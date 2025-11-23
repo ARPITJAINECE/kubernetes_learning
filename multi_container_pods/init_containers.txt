@@ -1,0 +1,26 @@
+2️⃣ INIT CONTAINERS
+(Prepare environment BEFORE main containers start)
+
+
+
+✔ Basic Meaning
+
+Init containers:
+Run before main containers
+Run sequentially (one at a time)
+Must complete successfully
+Only then main containers start
+Are used to prepare environment
+
+They do NOT run alongside main app.
+
+
+
+
+✔ Use Case (Simple Example)
+
+Wait for DB to be ready
+Run database migration
+Download config files
+Setup permissions
+Pre-create directories

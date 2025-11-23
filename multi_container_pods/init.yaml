@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-container-pod
+spec:
+  initContainers:
+    - name: init-db-check
+      image: busybox
+      command: ["sh", "-c", "until nc -z db 3306; do echo waiting; sleep 2; done"]
+
+  containers:
+    - name: main-app
+      image: nginx

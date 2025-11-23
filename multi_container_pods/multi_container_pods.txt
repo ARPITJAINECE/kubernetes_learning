@@ -1,0 +1,45 @@
+1️⃣ WHAT ARE MULTI-CONTAINER PODS?
+
+A multi-container pod is a Kubernetes Pod that contains more than one container inside the same Pod, sharing:
+Same network (same IP, same ports)
+Same storage volumes
+Same lifecycle
+Same resources (node, CPU, memory)
+They work together as a team inside one Pod.
+
+✔ They are NOT separate applications
+✔ They are tightly coupled helpers
+✔ They run on the same node, same Pod sandbox
+
+
+
+
+
+
+2️⃣ Why do we use multi-container pods?
+
+Because sometimes ONE container is not enough.
+We use multi-container pods when containers:
+Must share files
+Must communicate using localhost
+Must start and stop together
+Are logically inseparable
+
+
+
+
+
+
+3️⃣ MOST IMPORTANT RULE
+
+Multi-container pods are used when containers MUST live together, not separately.
+
+
+
+
+
+
+Types of Multi-Container Pods:
+1. Co-located Container:
+2. Init Containers:
+3. Side-Car Container : 

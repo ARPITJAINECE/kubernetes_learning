@@ -1,0 +1,27 @@
+1️⃣ CO-LOCATED CONTAINERS
+(Main + helper containers running TOGETHER)
+
+
+✔ Basic Meaning
+
+These are multiple containers inside one Pod that:
+Run together
+Share network (same IP, ports)
+Share volumes
+Start at the same time
+Stop at the same time
+
+They are NOT pre-start (init)
+They are NOT helper log agents (sidecar)
+
+They are simply two containers that must live together.
+
+
+
+
+✔ Use Case (Simple Example)
+
+Application container + file-writer container
+Container A produces data
+Container B reads/processes the same data
+Both must run together

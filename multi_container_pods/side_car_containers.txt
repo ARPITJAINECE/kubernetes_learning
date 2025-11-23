@@ -1,0 +1,29 @@
+3️⃣ SIDECAR CONTAINERS
+(Helper containers running WITH the main app)
+
+
+
+✔ Basic Meaning
+
+Sidecars run alongside the main container to provide continuous support.
+
+They are a special case of co-located containers, BUT with a purpose:
+Logging
+Monitoring
+Proxying
+Syncing
+Envoy/Istio agents
+File updaters
+
+Sidecar ≠ init container
+Sidecar = always runs WITH main container
+
+✔ Use Case : 
+Fluentd sidecar to collect logs
+Envoy proxy to route traffic
+File sync sidecar
+Security agent sidecar
+
+
+Most common:
+App writes logs → sidecar ships logs to Elasticsearch

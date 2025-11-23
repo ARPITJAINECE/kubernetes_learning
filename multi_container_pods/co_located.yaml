@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: colocated-pod
+spec:
+  containers:
+    - name: app
+      image: nginx
+      volumeMounts:
+        - name: shared
+          mountPath: /data
+
+    - name: worker
+      image: busybox
+      command: ["sh", "-c", "echo 'processing files...' && sleep 3600"]
+      volumeMounts:
+        - name: shared
+          mountPath: /data
+
+  volumes:
+    - name: shared
+      emptyDir: {}
