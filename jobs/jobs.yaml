@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: example-job
+spec:
+  backoffLimit: 4            # How many retries if pod fails
+  completions: 1             # How many successful runs required
+  parallelism: 1             # How many pods can run at same time
+  ttlSecondsAfterFinished: 60 # Auto-delete Job after finish
+  template:
+    metadata:
+      labels:
+        job: example
+    spec:
+      restartPolicy: Never   # Required for Jobs
+      containers:
+        - name: task-runner
+          image: busybox
+          command: ["sh", "-c", "echo Running task && sleep 5"]
+
+
+
+# What Happens When You Run This Job?
+
+# Kubernetes creates 1 pod
+# Pod prints: “Running task”
+# Pod sleeps for 5 seconds
+# Pod exits successfully
+# Job becomes Completed
+# If pod fails → Kubernetes retries up to 4 times
+# After 60 sec → Job is deleted (because of ttlSecondsAfterFinished)
+
+
+
+
+
+
+
+# backoffLimit: 4
+# How many times Kubernetes retries the pod if it fails.
+
+# completions: 1
+# How many times the Job must finish successfully.
+# 1 = run once
+# 5 = run successfully five times
+
+# parallelism: 1
+# How many pods of this Job run at the same time.
+# 1 = run sequentially
+# 5 = run five pods together (parallel batch job)
+
+# ttlSecondsAfterFinished: 60
+# Auto-delete the Job 60 seconds after completion (cleanup).

@@ -1,0 +1,30 @@
+What Is a Job in Kubernetes?
+
+A Job is a Kubernetes object used to run a one-time task that must complete successfully.
+
+✔ Runs a task once
+✔ Retries if the task fails
+✔ Stops after success
+✔ Ensures task completion
+
+Jobs are designed for work that must finish, not run forever.
+
+
+
+
+
+Deployment = run forever
+Job = run once and finish
+
+
+
+
+
+
+When Do We Use Jobs?
+✔ Backup scripts
+✔ Sending reports
+✔ Cleaning logs
+✔ Database initialization
+✔ File processing
+✔ One-time automation
