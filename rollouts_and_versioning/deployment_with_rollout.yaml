@@ -9,6 +9,15 @@ spec:
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 1
+        
+  # also we can specify in terms of percent as well.
+  # strategy:
+  # type: RollingUpdate
+  # rollingUpdate:
+  #   maxSurge: 25%
+  #   maxUnavailable: 25%
+
+
   selector:
     matchLabels:
       app: web
