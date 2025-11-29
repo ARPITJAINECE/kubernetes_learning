@@ -1,0 +1,19 @@
+What are annotations?
+1. Annotations are also key-value pairs but used for storing extra information (metadata) that is NOT used for selecting or grouping resources.
+
+
+Why do we use them?
+1. Debug info
+2. Version info
+3. Contact info
+4. URL links
+5. Tool metadata (Ingress controllers, service mesh, monitoring tools)
+
+
+
+
+YAML Example:
+metadata:
+  annotations:
+    owner: "SRE Team"
+    description: "Nginx web server"

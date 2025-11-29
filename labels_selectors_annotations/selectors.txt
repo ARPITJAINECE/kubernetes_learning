@@ -1,0 +1,35 @@
+Label selectors let Kubernetes find objects using labels.
+
+
+
+
+
+There are two types:
+✔ 1) Equality selector
+app = nginx
+env != prod
+
+✔ 2) Set-based selector
+env in (dev, qa)
+tier notin (cache)
+
+
+
+
+
+
+Why do we use label selectors?
+1. To decide which pods a Service or Deployment should work with.
+
+
+
+
+ex : 
+1. A Service selects pods with app: nginx
+        selector:
+            app: nginx
+
+2. Deployment using label selector:
+        selector:
+            matchLabels:
+                app: web

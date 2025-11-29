@@ -1,0 +1,19 @@
+Labels are key-value pairs attached to Kubernetes objects (Pods, Deployments, Services, etc.)
+They are used to identify, group, and organize resources.
+
+
+
+
+
+Why do we use labels?
+1. To select pods for a Service
+2. To select pods in a Deployment/ReplicaSet
+3. To categorize resources (e.g., env=dev, app=web)
+4. For scaling, monitoring, scheduling
+
+
+ex : 
+metadata:
+  labels:
+    app: nginx
+    env: dev
