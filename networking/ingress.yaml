@@ -7,24 +7,78 @@
 # Because you are controlling traffic coming INTO the database pod.
 
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: production
+  labels:
+    name: production     # Match label for namespaceSelector
+
+
+---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-backend-to-db         # Name of policy
-  namespace: production             # Applies inside this namespace only
+  name: allow-prod-backend-and-backup-to-db       # Name of the policy
+  namespace: production                            # Policy applies inside THIS namespace
 spec:
-  podSelector:                      # Select the target pod(s)
+  # -----------------------------------------------------------------------------------------
+  # podSelector: WHICH PODS DOES THIS POLICY APPLY TO?
+  # This policy is applied TO pods that have label: app=database.
+  # Meaning: This DB pod will only accept traffic allowed below.
+  # -----------------------------------------------------------------------------------------
+  podSelector:
     matchLabels:
-      app: database                 # This policy applies TO the DB pod
+      app: database
 
+  # -----------------------------------------------------------------------------------------
+  # policyTypes tells Kubernetes whether this is INGRESS, EGRESS, or both.
+  # Here we allow only INBOUND (incoming) connections to the DB pod.
+  # -----------------------------------------------------------------------------------------
   policyTypes:
-    - Ingress                       # This is an INGRESS policy (incoming traffic)
+    - Ingress
 
   ingress:
-    - from:                         # Only these pods are allowed IN
-        - podSelector:
+    - from:
+        # ============================================================================
+        # 1) ALLOW ONLY BACKEND PODS FROM PRODUCTION NAMESPACE
+        # ============================================================================
+
+        # --------------------------- OPTION A ----------------------------------------
+        # Using namespace labels (recommended only if namespaces have labels)
+        # This requires that your 'production' namespace has a label:
+        #   name: production
+        # -----------------------------------------------------------------------------
+        - namespaceSelector:
             matchLabels:
-              app: backend          # Only backend pods may send traffic
+              name: production              # Namespace must have this label
+          podSelector:
+            matchLabels:
+              app: backend                  # AND pod must have app=backend
+
+
+        # --------------------------- OPTION B ----------------------------------------
+        # Using built-in namespace metadata label (BEST when namespaces don't have labels)
+        # Kubernetes automatically attaches a label:
+        #   kubernetes.io/metadata.name = <namespace-name>
+        # So we can match namespaces by their actual name even if no labels exist.
+        # -----------------------------------------------------------------------------
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: production   # Select the production namespace
+          podSelector:
+            matchLabels:
+              app: backend                              # Only backend pods allowed
+
+        # ============================================================================
+        # 2) ALLOW BACKUP SERVER IP (E.g., external backup system)
+        # ============================================================================
+
+        - ipBlock:
+            cidr: 192.168.10.50/32         # ONLY this specific backup server IP is allowed
+            # NOTE: /32 = exact single IP address
+
+
       ports:
         - protocol: TCP
-          port: 5432                # Only allow DB port
+          port: 5432                        # Only allow DB port (PostgreSQL)
