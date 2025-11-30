@@ -1,0 +1,25 @@
+Why do we need Network Policies?
+Because by default all pods can talk to all pods (open network).
+
+NetworkPolicy lets you create a firewall at pod level:
+Allow specific ingress
+Allow specific egress
+Block everything else
+
+
+
+
+
+Example : 
+
+Pods:
+    frontend-pod
+    backend-pod
+    db-pod
+
+Requirement:
+    Frontend → ❌ cannot talk to DB
+    Backend → ✅ allowed to talk to DB on port 5432
+    DB → should only accept traffic from backend
+    
+    We achieve this using a NetworkPolicy on the database pod.

@@ -1,0 +1,28 @@
+Ingress = Incoming traffic TO a pod
+
+Example:
+Backend → Database
+Frontend → Backend
+User → Frontend
+
+
+
+
+
+
+Egress = Outgoing traffic FROM a pod
+
+Example:
+Frontend → Backend
+Backend → Database
+Pod → Internet API
+
+
+
+
+
+
+CRUX : 
+
+Ingress = who can talk to me
+Egress = who I can talk to
