@@ -1,0 +1,104 @@
+# Scenario : 
+# frontend-pod → should NOT talk to DB
+# backend-pod → SHOULD talk to DB on port 3306
+# Database must allow ONLY backend ingress
+# Egress from DB is NOT allowed (optional but included)
+
+---
+apiVersion: networking.k8s.io/v1      # API group for Network Policies
+kind: NetworkPolicy                    # We are creating a NetworkPolicy object
+metadata:
+  name: db-allow-backend-ingress       # Policy name (best practice: describe purpose)
+  namespace: production                # Namespace where DB + backend + frontend exist
+
+spec:
+  podSelector:                         # SELECT which pods this policy applies TO
+    matchLabels:                       # These are the PODS being "protected"
+      app: database                    # Apply policy to all pods with label app=database
+
+  policyTypes:                         # Define which direction traffic rules apply to
+    - Ingress                          # Ingress = incoming traffic into DB pods
+    - Egress                           # Egress = outgoing traffic from DB pods (optional)
+
+  ingress:
+    - from:                            # Allowed sources of incoming traffic into DB
+        - podSelector:                 # Only allow pods with label `app=backend`
+            matchLabels:
+              app: backend
+      ports:
+        - protocol: TCP                # DB listens on TCP
+          port: 3306                   # Allow backend to access MySQL port on DB pods
+
+  egress:                               # OPTIONAL but good practice: Restrict DB outgoing connections
+    - to:
+        - podSelector:                 # Allow DB to talk back ONLY to backend
+            matchLabels:
+              app: backend
+      ports:
+        - protocol: TCP
+          port: 3306
+
+
+
+
+# spec Defines:
+# Which pods this policy protects
+# What traffic is allowed
+
+
+
+# podSelector : 
+# Selects the DB pods using label : 
+# app=database
+# ⚠️ Important:
+# NetworkPolicy applies ONLY to pods that match this.
+
+
+
+# policyTypes : 
+# Defines directions controlled:
+# Ingress = traffic coming into DB
+# Egress = traffic going out of DB
+
+
+
+# ingress → from : 
+# Defines who can send traffic to DB.
+# We allow:
+# app=backend
+# Only backend pods can reach DB.
+
+
+
+# ingress → ports : 
+# DB listens on port 3306 → allow only this port.
+
+
+
+# egress : 
+# This prevents DB from calling:
+# frontend
+# internet
+# other services
+
+# Only allow DB → backend traffic.
+
+
+
+
+
+
+
+
+# IN CRUX : 
+
+# ✔ Allows:
+# backend → db :3306 (allowed)
+# db → backend :3306 (allowed)
+
+# ❌ Blocks:
+# frontend → db (DENIED)
+# frontend → db :3306 (DENIED)
+# db → frontend (DENIED)
+# db → internet (DENIED)
+# db → other pods (DENIED)

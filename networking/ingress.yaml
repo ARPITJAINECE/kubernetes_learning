@@ -1,0 +1,30 @@
+# INGRESS NETWORK POLICY : 
+# ✔ Goal
+# Allow ONLY backend pods to access the database pod on port 5432.
+# Block everyone else (including frontend).
+
+# ✔ Why this is an INGRESS rule?
+# Because you are controlling traffic coming INTO the database pod.
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-backend-to-db         # Name of policy
+  namespace: production             # Applies inside this namespace only
+spec:
+  podSelector:                      # Select the target pod(s)
+    matchLabels:
+      app: database                 # This policy applies TO the DB pod
+
+  policyTypes:
+    - Ingress                       # This is an INGRESS policy (incoming traffic)
+
+  ingress:
+    - from:                         # Only these pods are allowed IN
+        - podSelector:
+            matchLabels:
+              app: backend          # Only backend pods may send traffic
+      ports:
+        - protocol: TCP
+          port: 5432                # Only allow DB port

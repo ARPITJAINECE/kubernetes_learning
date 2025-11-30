@@ -21,5 +21,14 @@ Requirement:
     Frontend → ❌ cannot talk to DB
     Backend → ✅ allowed to talk to DB on port 5432
     DB → should only accept traffic from backend
-    
+
     We achieve this using a NetworkPolicy on the database pod.
+
+
+
+
+
+
+
+Network Policies = firewall rules for pods 
+They work ONLY if a CNI plugin supports them (Calico, Cilium, WeaveNet).

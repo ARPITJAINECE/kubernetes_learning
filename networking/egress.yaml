@@ -1,0 +1,33 @@
+# EGRESS NETWORK POLICY : 
+# ✔ Goal
+# Allow backend pods to talk ONLY to database pods on port 5432.
+# Block backend from talking to anything else outside.
+
+# ✔ Why this is an EGRESS rule?
+# Because you are controlling traffic going OUT of the backend pods.
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: backend-egress-only-db
+  namespace: production
+spec:
+  podSelector:
+    matchLabels:
+      app: backend                # This policy applies TO the backend pods
+
+  policyTypes:
+    - Egress                      # This is an EGRESS rule (outgoing traffic)
+
+  egress:
+    - to:                         # Only allow backend to talk to...
+        - podSelector:
+            matchLabels:
+              app: database       # ...database pods
+      ports:
+        - protocol: TCP
+          port: 5432              # ...only on DB port
+
+  # (OPTIONAL) deny-all for other egress traffic
+  # you do NOT need to write deny rules — default is to block everything
