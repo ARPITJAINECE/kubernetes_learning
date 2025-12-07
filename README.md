@@ -8,6 +8,7 @@ This repository documents my journey of learning Kubernetes—from core concepts
 It serves as both my personal reference and a helpful resource for anyone getting started with Kubernetes.
 
 📚 What’s Inside?
+
 This repo includes:
 
 1. Kubernetes Basics
