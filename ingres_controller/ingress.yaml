@@ -1,0 +1,28 @@
+# You are requested to create the ingress name as critical-ingress to make the new application available at /pay.
+# Identify and implement the best approach to making this application available on the ingress controller and test to make sure its working.
+# Look into annotations: rewrite-target as well.
+# Path: /pay
+# Configure correct backend service
+# Configure correct backend port
+# Has the rewrite-target annotation been added?
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: critical-ingress
+  namespace: critical-space
+  labels:
+    env: prod
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /pay
+            pathType: Prefix
+            backend:
+              service:
+                name: pay-service
+                port:
+                  number: 8080

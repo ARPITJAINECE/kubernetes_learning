@@ -1,0 +1,7 @@
+Q1 : What is the name of the Ingress Resource?
+----   k get ingress -A
+
+
+Q2 : What happens if no Ingress path matches?
+---- If a request does not match any path or host rule in an Ingress, it is forwarded to the default backend service (if configured).
+---- If no default backend exists → the client gets 404 Not Found.
