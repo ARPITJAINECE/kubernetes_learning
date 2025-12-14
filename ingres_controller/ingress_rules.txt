@@ -1,0 +1,54 @@
+Ingress rules define:
+1. Host
+2. Path
+3. Backend Service
+
+
+
+1. Host-based routing
+
+Example domains
+example.com
+api.example.com
+
+EXAMPLE : 
+example.com → frontend-service
+api.example.com → backend-service
+
+Like two shops in the same mall:
+Door A → Clothing store
+Door B → Electronics store
+
+
+
+
+
+2. Path-based routing : 
+Paths : 
+/
+/api
+/app
+
+Rule idea
+example.com/     → frontend-service
+example.com/api  → api-service
+example.com/app  → app-service
+
+
+
+
+
+
+
+example ingress example : 
+rules:
+- host: example.com
+  http:
+    paths:
+    - path: /api
+      pathType: Prefix
+      backend:
+        service:
+          name: api-service
+          port:
+            number: 80

@@ -1,0 +1,32 @@
+Backend Definition
+
+
+A. Service name : 
+The Service to forward traffic to:
+
+name: api-service
+
+
+
+B. Service port
+Port exposed by the Service:
+
+port:
+  number: 80
+
+
+
+
+
+EXAMPLE YAML FILE : 
+rules:
+- host: example.com
+  http:
+    paths:
+    - path: /api
+      pathType: Prefix 
+      backend:  ------------ above are defined with example
+        service:
+          name: api-service
+          port:
+            number: 80

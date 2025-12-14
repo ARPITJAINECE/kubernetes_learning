@@ -1,0 +1,36 @@
+Path Types
+
+1. Prefix
+/api matches:
+✔ /api
+✔ /api/users
+✔ /api/v1
+
+2. Exact
+/api matches:
+✔ /api
+❌ /api/users
+
+3. ImplementationSpecific : 
+Behavior depends on controller
+Avoid as beginner
+
+👉 Use Prefix most of the time
+
+
+
+
+
+
+EXAMPLE YAML FILE : 
+rules:
+- host: example.com
+  http:
+    paths:
+    - path: /api
+      pathType: Prefix   ------------ above are 3 types defined
+      backend:
+        service:
+          name: api-service
+          port:
+            number: 80

@@ -1,0 +1,58 @@
+1. What is Ingress?
+Ingress is a Kubernetes object that defines rules for how external HTTP/HTTPS traffic enters your cluster and reaches your Services.
+
+👉 Ingress itself does NOT handle traffic.
+👉 It only describes rules.
+
+Think of it like:
+
+Ingress = traffic rulebook
+
+
+
+
+
+2️⃣ Why Ingress Exists : ->
+Problem before Ingress : 
+If you expose apps using Services:
+App 1 → Service (LoadBalancer)
+App 2 → Service (LoadBalancer)
+App 3 → Service (LoadBalancer)
+
+❌ You get:
+Multiple external IPs
+Higher cloud cost
+No URL-based routing
+No centralized TLS
+
+
+3️⃣ Ingress exists to:
+
+Use one external IP
+Route traffic using URL & domain
+Centralize TLS/HTTPS
+Act as a smart entry point
+
+
+
+
+
+4️⃣ Service vs Ingress
+A. Service
+Routes traffic inside the cluster
+Layer 4 (TCP/UDP)
+Knows nothing about URLs
+
+Service → "Send traffic to these Pods"
+
+
+B. Ingress
+Routes traffic from outside
+Layer 7 (HTTP/HTTPS)
+
+Understands:
+Domains
+Paths
+Headers
+
+Ingress → "If URL looks like this, go to that Service"

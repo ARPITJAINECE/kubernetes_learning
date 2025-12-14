@@ -1,0 +1,11 @@
+Rewrite-target : 
+rewrite-target rewrites the incoming URL path to a different path before sending the request to the backend service.
+
+
+Why do we need rewrite-target?
+Most backend applications (like Spring Boot, Nginx, Node.js) expect requests at /, not at /pay, /api, /stream, etc.
+
+Ingress helps by:
+Accepting requests at a custom path
+Rewriting that path to /
+Forwarding it to the backend
