@@ -93,3 +93,9 @@
     ❌ No auto-scaling
 
 
+
+
+9. If listing or finding out what all pods are static pods, so use below steps : 
+    a. kubectl get pods -A : to list all the pods in all the namespaces
+    b. Now search for pods which are having node_name in their names.
+    c. those all are the static pods
