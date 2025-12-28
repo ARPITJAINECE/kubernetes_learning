@@ -1,0 +1,10 @@
+# vim /etc/kubernetes/manifests/nginx-static.yaml : 
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-static
+spec:
+  containers:
+  - name: nginx
+    image: nginx

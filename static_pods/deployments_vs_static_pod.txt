@@ -1,0 +1,23 @@
+Deployment : 
+    Created through the Kubernetes API server using kubectl apply
+    YAML is stored in etcd
+    Managed by controllers (Deployment → ReplicaSet → Pod)
+    Requires API server, scheduler, and controller manager
+    Pods can be scheduled on any available node
+    Supports replicas, scaling, rolling updates, rollbacks
+    If a Pod dies, Kubernetes recreates it on any node
+    Used for real application workloads
+    Can be deleted or modified using kubectl
+    Does not work if control plane is down
+
+Static Pod : 
+    Created by placing a YAML file directly on a node
+    YAML lives on the node filesystem
+    Managed only by kubelet
+    Does not require API server or scheduler
+    Always runs on one specific node
+    No scaling, no replicas, no rolling updates
+    If a Pod dies, kubelet restarts it on the same node
+    Mainly used for control-plane and system components
+    Cannot be deleted using kubectl
+    Works even when the master/control plane is down`

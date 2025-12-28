@@ -1,0 +1,95 @@
+1. What is a Static Pod? 
+    👉 A Static Pod is a Pod managed directly by the kubelet on a node, not by the Kubernetes control plane.
+
+
+
+2. When do Static Pods come into picture?
+    Static Pods are used when you want:
+        A Pod to always run on a specific node
+        A Pod to run even if API server is down
+        Node-level / bootstrap / critical components
+
+    👉 Most commonly used for control plane components.
+
+
+3. IMPORTANT : 
+        Normal Pod → created via API server
+        Static Pod → created via local file on node
+
+
+4. Can Static Pods run WITHOUT a master node?
+    👉 YES — absolutely.
+
+    This is the BIG power of Static Pods.
+
+    If:
+    No API server
+    No etcd
+    No scheduler
+    No controller manager
+
+    Still:
+    kubelet + static pod YAML = running container
+
+
+    🔥 That means:
+    kubelet alone is enough to run your app using Static Pods
+
+
+5. Why Kubernetes even has Static Pods
+    Because kubelet must start the control plane itself.
+
+    Chicken-and-egg problem:
+
+        Who starts the API server?
+        → kubelet using Static Pods
+
+
+    That’s why in real clusters:
+    kube-apiserver
+    etcd
+    controller-manager
+    scheduler
+
+    are often Static Pods.
+
+
+
+6. How Static Pods work (very simple flow)
+    kubelet starts
+    ↓
+    kubelet watches a directory (e.g. /etc/kubernetes/manifests)
+    ↓
+    YAML file appears
+    ↓
+    kubelet creates Pod locally
+    ↓
+    Container runs
+
+
+    No scheduler.
+    No controller.
+    No API calls.
+
+
+
+7. Where do Static Pod YAMLs live?
+    On the NODE filesystem, not in etcd.
+
+    Common paths:
+    /etc/kubernetes/manifests/
+
+
+    Configured in kubelet as:
+    --pod-manifest-path
+
+
+
+8. What Static Pods CANNOT do (important)
+    ❌ No ReplicaSets
+    ❌ No Deployments
+    ❌ No Services managing them
+    ❌ No scheduling
+    ❌ No auto-scaling
+
+
