@@ -1,0 +1,28 @@
+# creation of a priority class - yaml example
+---
+
+apiVersion: scheduling.k8s.io/v1   # API group for scheduling-related objects
+kind: PriorityClass               # We are creating a PriorityClass
+metadata:
+  name: high-priority             # Name of the priority class (used by Pods)
+value: 1000                        # Priority value (higher number = higher priority)
+globalDefault: false               # This is NOT the default priority for all Pods
+preemptionPolicy: PreemptLowerPriority # Allows this Pod to preempt (kill) lower-priority Pods
+description: "Priority for critical applications"
+
+
+
+
+
+#  craetion of a pod using above priority class
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: critical-app-pod
+spec:
+  priorityClassName: high-priority   # Pod is assigned HIGH priority
+  containers:
+  - name: app
+    image: nginx

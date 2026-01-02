@@ -1,0 +1,40 @@
+1. First, the core problem Kubernetes has : 
+
+Kubernetes runs Pods on Nodes, but:
+    Nodes have limited CPU & memory
+    Many Pods want to run at the same time
+    Sometimes new Pods arrive when the cluster is already full
+
+So Kubernetes must answer two questions:
+    Which Pod should run first?
+    If there is no space, which Pod should be removed?
+
+👉 Priority Classes exist to answer these two questions clearly and predictably.
+
+
+
+2. What exactly is a Priority Class? (Plain meaning)
+
+A PriorityClass is just a label with a number that says:
+    “Pods using this class are more important than Pods with a lower number.”
+
+Higher number → higher importance
+Lower number → less important
+
+Kubernetes uses this number only when resources are not enough.
+
+
+
+3. Where does priority matter? : 
+Priority matters in only two situations:
+
+1️⃣ Scheduling (Pod is waiting to run)
+If multiple Pods are waiting:
+Kubernetes schedules higher priority Pods first
+
+2️⃣ Resource pressure (Cluster is full)
+If a high-priority Pod cannot fit:
+Kubernetes removes lower-priority Pods
+This removal is called Preemption
+
+((Preemption means Kubernetes forcefully removes lower-priority Pods to make space for a higher-priority Pod.))

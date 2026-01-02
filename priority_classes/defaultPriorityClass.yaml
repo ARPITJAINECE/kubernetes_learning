@@ -1,0 +1,33 @@
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: normal-priority
+value: 0
+globalDefault: true                  # This is the DEFAULT priority
+description: "Default priority for all Pods"
+
+
+# Very important rules:
+# Only ONE PriorityClass can have globalDefault: true
+# Any Pod without priorityClassName gets this priority
+
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: normal-app
+spec:
+  containers:
+  - name: app
+    image: nginx
+
+
+# What happens here:
+# Pod does NOT mention priorityClassName
+
+# Kubernetes assigns:
+# normal-priority
+# Priority value = 0
+# 👉 This is how most normal apps run

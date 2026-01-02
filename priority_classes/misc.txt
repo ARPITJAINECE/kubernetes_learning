@@ -1,0 +1,9 @@
+1.  lets say if we dont have defined globaldefault and also no priorityclassname is there in pod definition file.
+    then, by defualt k8s gives that (one or many) pod (or s), priority=0
+
+
+
+
+
+2. PriorityClass defines how important a Pod is. Pods with higher priority are scheduled first and can preempt (kill) lower-priority Pods when resources are insufficient. 
+   globalDefault defines the priority for Pods that do not explicitly specify one.

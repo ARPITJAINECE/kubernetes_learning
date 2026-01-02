@@ -1,0 +1,38 @@
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: low-priority
+value: -1000                        # Lower than normal Pods
+globalDefault: false
+preemptionPolicy: PreemptLowerPriority
+description: "Priority for batch and background jobs"
+
+
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: batch-job-pod
+spec:
+  priorityClassName: low-priority    # Pod has LOW importance
+  containers:
+  - name: batch
+    image: busybox
+    command: ["sleep", "3600"]
+
+
+
+
+
+# Conceptually:
+# This Pod runs normally
+
+# But if cluster needs space:
+# This Pod is first candidate to be killed
+
+# Designed for:
+# Batch jobs
+# Background processing
+# Non-critical work

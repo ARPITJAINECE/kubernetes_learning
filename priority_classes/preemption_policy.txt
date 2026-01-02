@@ -1,0 +1,9 @@
+What is preemptionPolicy?
+
+You will see this inside PriorityClass, so understand it here itself.
+
+Meaning:
+If a Pod using this PriorityClass cannot be scheduled due to lack of resources, Kubernetes is allowed to remove lower-priority Pods.
+
+1. PreemptLowerPriority----Allow killing lower-priority Pods
+2. Never----Do NOT kill any Pods, even if priority is high
