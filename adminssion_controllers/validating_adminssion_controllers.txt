@@ -1,0 +1,60 @@
+1. What is a Validating Admission Controller?
+    It is a Kubernetes component that DECIDES whether a request is allowed or rejected before the object is stored in etcd.
+
+
+It:
+    Runs after authentication
+    Runs after authorization
+    Runs after mutating admission controllers
+    Runs just before persistence
+
+
+
+
+((((((  It enforces rules. It does not fix things.  ))))))
+
+
+
+
+2. Why validating admission controllers exist
+
+RBAC answers:
+    “Who can do what?”
+
+But validating admission controllers answer:
+    “Is this request acceptable according to our rules?”
+
+They enforce:
+    Security rules
+    Organizational policies
+    Best-practice compliance
+
+
+
+
+3. What kind of policies do validating admission controllers enforce?
+    Validating admission controllers enforce RESTRICTION and COMPLIANCE policies.
+
+Common policy categories:
+    Security policies
+    Configuration policies
+    Governance policies
+    Operational safety policies
+    Label and Annotation Policies
+    Naming Conventions
+    Custom Checks
+    Regulatory Compliances
+
+
+
+Examples of Validating Admission Controller policies : 
+1. PodSecurityPolicy (PSP)
+2. Resource Quota
+3. NetworkPolicies
+4. Namespace Admission Policies
+
+
+
+
+A Validating Admission Controller enforces policies by allowing or rejecting Kubernetes API requests.
+It is done based on defined rules, without modifying the resource, after mutation but before persistence.

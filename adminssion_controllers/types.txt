@@ -1,0 +1,6 @@
+4 types of Admission Controllers are there : 
+
+1. mutating
+2. validating
+3. custom
+4. external

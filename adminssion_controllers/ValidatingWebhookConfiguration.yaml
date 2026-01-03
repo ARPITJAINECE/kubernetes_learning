@@ -1,0 +1,26 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: deny-latest-tag
+webhooks:
+- name: validate.example.com
+  rules:
+  - apiGroups: [""]
+    apiVersions: ["v1"]
+    operations: ["CREATE"]
+    resources: ["pods"]
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: default
+      path: "/validate"
+    caBundle: <BASE64_CA_CERT>
+  admissionReviewVersions: ["v1"]
+  sideEffects: None
+
+
+
+# What this does:
+# Intercepts Pod creation
+# Sends Pod spec to webhook
+# Webhook decides allow/deny

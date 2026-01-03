@@ -1,0 +1,28 @@
+What is an Admission Controller?
+An Admission Controller intercepts a request after authorization and before it is stored in etcd, and can:
+
+Allow the request
+Reject the request
+Modify the request
+
+Think of it as:
+Policy + security + automation gate
+
+
+
+
+
+Flow : 
+kubectl apply
+   ↓
+Authentication   (Who?)
+   ↓
+Authorization    (Allowed?)
+   ↓
+Admission Controller        (Should this be allowed / modified?)
+   ↓
+etcd
+
+
+
+

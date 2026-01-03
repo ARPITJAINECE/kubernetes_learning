@@ -1,0 +1,43 @@
+1. What is a Mutating Admission Controller?
+A Mutating Admission Controller is a Kubernetes component that MODIFIES an API request before the object is stored in etcd.
+It changes the object to enforce defaults, policies, or automation.
+
+
+It runs:
+    After authentication
+    After authorization
+    Before validating admission controllers
+
+
+
+Why does Kubernetes need mutating admission controllers?
+    Users often forget best practices
+    Repeating the same configuration is error-prone
+    Some behavior must be automatic and consistent
+
+Mutating controllers help by:
+    Reducing human error
+    Enforcing standards automatically
+    Injecting required configuration
+
+
+
+
+
+Built-in deafult mutating policies : 
+1. DefaultStorageClass
+2. LimitRanger
+3. ServiceAccount
+4. NamespaceLifecycle
+5. TaintNodesByCondition
+6. AlwaysPullImages
+
+
+
+
+
+
+
+
+
+Mutating controllers run BEFORE validating controllers

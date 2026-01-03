@@ -1,0 +1,42 @@
+1. What does “External” mean here?
+
+External Admission Controller means:
+    The admission logic does NOT live inside the Kubernetes API server.
+
+Instead:
+    Kubernetes calls an external service
+    That service decides allow / deny / modify
+    Kubernetes follows that decision
+
+👉 This external service is contacted via a Webhook
+
+
+
+
+
+2. How External Admission Controllers work (one-line)
+Kubernetes sends the resource request to an external HTTP(S) service, waits for its response, and then either accepts, rejects, or mutates the request.
+
+
+
+3. Why External Admission Controllers exist
+
+Built-in admission controllers:
+    Are generic
+    Are limited
+    Cannot handle custom business rules
+
+External admission controllers solve:
+    Custom security rules
+    Organization-specific policies
+    Compliance requirements
+
+
+
+
+Examples : 
+1. OftK
+2. Elastic's ECK admission Controller
+3. K-Rail
+4. Cert-Manager
+5. Admission Control Webhooks

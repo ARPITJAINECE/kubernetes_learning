@@ -1,0 +1,21 @@
+# user typed below pod yaml file : 
+---
+metadata:
+  name: app
+spec:
+  containers:
+  - image: nginx
+
+
+
+# what kubernetes will do because of mutating admission controller : 
+---
+metadata:
+  labels:
+    env: prod
+spec:
+  containers:
+  - image: nginx
+    resources:
+      limits:
+        memory: "256Mi"
