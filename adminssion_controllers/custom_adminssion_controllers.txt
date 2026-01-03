@@ -1,0 +1,24 @@
+What does “Custom Admission Controller” mean?
+It is a user-defined policy component that Kubernetes calls before creating or updating resources, so you can enforce your own rules.
+
+In practice, this means:
+    You write your own logic
+    Kubernetes calls it automatically
+    It decides to allow, deny, or modify requests
+
+👉 Custom admission controllers are implemented using Admission Webhooks.
+
+
+
+High Level Flow : 
+kubectl apply
+      ↓
+Kubernetes API Server
+      ↓
+Admission Webhook (your service)
+      ↓
+Allow / Deny / Mutate
+
+
+
+
