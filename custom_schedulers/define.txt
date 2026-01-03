@@ -1,0 +1,2 @@
+A custom scheduler is a user-implemented component that watches Pods with a specific schedulerName.
+It assigns them to nodes based on custom logic by creating Pod-to-Node bindings via the Kubernetes API.
