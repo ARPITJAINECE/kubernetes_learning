@@ -1,0 +1,284 @@
+Q : Scenario : -----
+You are working in a Kubernetes cluster that has multiple namespaces:
+dev
+qa
+prod
+Your organization has a strict rule:
+
+👉 Every Pod must contain a label env whose value must match the namespace name.
+
+Examples:
+Pod created in dev namespace → must have label env=dev
+Pod created in qa namespace → must have label env=qa
+Pod created in prod namespace → must have label env=prod
+
+❌ If the label is missing
+❌ Or the label value does not match the namespace
+👉 The Pod creation must be rejected
+
+You want Kubernetes to automatically enforce this rule, so that no user can bypass it, even if they have permission to create Pods.
+
+
+
+
+
+
+
+
+Solution : (implemeting check using validating admission webhook and controller)
+
+a. Why Validating Admission Webhook?
+    Because:
+        It sees the full Pod spec
+        It knows the namespace
+        It can accept or reject
+        It runs before the Pod is created
+        👉 This is EXACTLY what validating admission webhooks are designed for
+
+b.  Overall Flow : 
+    kubectl apply pod.yaml
+            ↓
+    Kubernetes API Server
+            ↓
+    Validating Admission Webhook
+            ↓
+    Our Python Webhook Service
+            ↓
+    ALLOW or DENY Pod creation
+
+
+
+Steps : 
+
+1. Decide the policy clearly : 
+    Policy rule:
+    Pod must have label env=<namespace-name>
+
+    This rule applies to:
+    Pod CREATE
+    All namespaces (dev, qa, prod)
+
+
+2. Write the webhook backend (Python) : 
+What this code will do:
+    Receive request from Kubernetes
+    Read namespace name
+    Read Pod labels
+    Compare env label with namespace
+    Allow or deny
+
+        <<<<<<<
+        from flask import Flask, request, jsonify
+
+        app = Flask(__name__)
+
+        @app.route("/validate", methods=["POST"])
+        def validate_pod():
+            # Kubernetes sends an AdmissionReview object
+            admission_review = request.json
+
+            # Extract the Pod object
+            pod = admission_review["request"]["object"]
+
+            # Get namespace where Pod is created
+            namespace = admission_review["request"]["namespace"]
+
+            # Get labels from Pod metadata (safe access)
+            labels = pod.get("metadata", {}).get("labels", {})
+
+            # Expected value of env label = namespace name
+            expected_env = namespace
+
+            # Actual env label from Pod
+            actual_env = labels.get("env")
+
+            # Allow only if env label matches namespace
+            allowed = actual_env == expected_env
+
+            # Prepare response for Kubernetes
+            response = {
+                "apiVersion": "admission.k8s.io/v1",
+                "kind": "AdmissionReview",
+                "response": {
+                    "uid": admission_review["request"]["uid"],
+                    "allowed": allowed
+                }
+            }
+
+            # If validation fails, return message
+            if not allowed:
+                response["response"]["status"] = {
+                    "message": f"Pod must have label env={expected_env}"
+                }
+
+            return jsonify(response)
+
+        # Start webhook server
+        if __name__ == "__main__":
+            app.run(host="0.0.0.0", port=443)
+        >>>>>>>
+
+
+3. Containerize the webhook :
+Dockerfile : 
+    FROM python:3.10
+    WORKDIR /app
+    COPY app.py .
+    RUN pip install flask
+    CMD ["python", "app.py"]
+
+
+docker build -t yourrepo/env-label-webhook .
+docker push yourrepo/env-label-webhook
+
+
+
+4. Deploy webhook into Kubernetes : 
+4.1. : Create a namespace for webhook : 
+        kubectl create namespace webhook-system
+
+4.2. : Deployment YAML : 
+        <<<<
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+        name: env-label-webhook
+        namespace: webhook-system
+        spec:
+        replicas: 1
+        selector:
+            matchLabels:
+            app: env-label-webhook
+        template:
+            metadata:
+            labels:
+                app: env-label-webhook
+            spec:
+            containers:
+            - name: webhook
+                image: yourrepo/env-label-webhook
+                ports:
+                - containerPort: 443   # Webhook listens on HTTPS
+        >>>
+
+
+5. Create Service to expose this above deployment created pods : 
+        <<<<
+        apiVersion: v1
+        kind: Service
+        metadata:
+        name: env-label-webhook
+        namespace: webhook-system
+        spec:
+        type: ClusterIP           # Internal service
+        selector:
+            app: env-label-webhook
+        ports:
+        - port: 443               # Service port
+            targetPort: 443         # Container port
+        >>>>
+
+
+
+6. TLS CERTIFICATES (MANDATORY) : 
+(Kubernetes REQUIRES HTTPS for admission webhooks.)
+
+6.1 Generate private key
+openssl genrsa -out webhook.key 2048
+
+6.2 Create CSR (IMPORTANT NAME)
+openssl req -new -key webhook.key -out webhook.csr \
+  -subj "/CN=env-label-webhook.webhook-system.svc"
+
+This must match:
+<service-name>.<namespace>.svc
+
+
+
+6.3 Generate self-signed certificate
+openssl x509 -req -in webhook.csr \
+  -signkey webhook.key \
+  -out webhook.crt \
+  -days 365
+
+
+6.4 Base64 encode certificate
+cat webhook.crt | base64 | tr -d '\n'
+
+
+6.5 Create TLS secret
+kubectl create secret tls webhook-tls \
+  --cert=webhook.crt \
+  --key=webhook.key \
+  -n webhook-system
+
+
+
+
+7. Register the webhook with Kubernetes : 
+        <<<<<<
+        apiVersion: admissionregistration.k8s.io/v1
+        kind: ValidatingWebhookConfiguration
+        metadata:
+        name: env-label-validator
+        webhooks:
+        - name: env-label.example.com
+
+        # When should this webhook be triggered?
+        rules:
+        - apiGroups: [""]
+            apiVersions: ["v1"]
+            operations: ["CREATE"]     # Only on Pod creation
+            resources: ["pods"]
+
+        # How Kubernetes reaches our webhook
+        clientConfig:
+            service:
+            name: env-label-webhook
+            namespace: webhook-system
+            path: "/validate"
+            caBundle: <BASE64_CERT_HERE>  # From step 6.4
+
+        admissionReviewVersions: ["v1"]
+
+        sideEffects: None
+
+        failurePolicy: Fail  # If webhook fails → reject Pod
+        >>>>>>
+
+
+
+8. TEST THE SCENARIO : 
+
+8.1 FULL INVALID POD YAML : 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: invalid-pod
+  namespace: qa          # Pod is being created in QA namespace
+  labels:
+    env: dev              # ❌ WRONG: env label does NOT match namespace
+spec:
+  containers:
+  - name: app
+    image: nginx
+
+
+    ERROR : Error from server: Pod must have label env=qa
+
+
+8.2 FULL VALID POD YAML
+apiVersion: v1
+kind: Pod
+metadata:
+  name: valid-pod
+  namespace: qa          # Pod is being created in QA namespace
+  labels:
+    env: qa               # ✅ CORRECT: env label matches namespace
+spec:
+  containers:
+  - name: app
+    image: nginx
+
+
+    RESULT : pod/valid-pod created

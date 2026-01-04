@@ -1,0 +1,3 @@
+there are 2 types of admission webhooks : 
+1. mutating admission webhooks
+2. validation admission webhooks

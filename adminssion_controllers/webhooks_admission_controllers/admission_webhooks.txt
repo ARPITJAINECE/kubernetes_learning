@@ -1,0 +1,48 @@
+1. First: why “webhooks” are needed at all : 
+
+Built-in admission controllers:
+    Are generic
+    Cannot cover custom company rules
+    Require API server flags to change
+
+👉 Kubernetes introduced Admission Webhooks to allow custom logic without changing Kubernetes itself.
+
+
+
+
+2. What is an Admission Webhook?
+An Admission Webhook is an external HTTP service that Kubernetes calls to decide what to do with an API request before the object is stored in etcd.
+
+Kubernetes:
+    Sends the request data
+    Waits for webhook’s decision
+    Acts accordingly
+
+
+
+
+3. Overall Request Flow : 
+kubectl apply
+   ↓
+Authentication
+   ↓
+Authorization
+   ↓
+Mutating Admission Webhooks
+   ↓
+Validating Admission Webhooks
+   ↓
+etcd
+
+
+
+
+4. Step-by-Step flow : 
+    User sends request (e.g., create Pod)
+    API server matches request against webhook rules
+    API server sends request to webhook as JSON
+    Webhook evaluates the request
+    Webhook responds:
+        Allow / Deny
+    Optional mutation patch
+    API server proceeds or rejects
