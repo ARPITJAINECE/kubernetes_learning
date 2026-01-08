@@ -1,0 +1,7 @@
+create -> k create -f deploy.yaml
+get -> k get deployments
+update -> k apply -f deploy2.yaml
+          k set image deployment/deployment-name nginx=nginx1:1.9.1
+status -> k rollout status deployment/new-deployment
+          k rollout history deployment/new-deployment
+rollback -> k rollout undo deployment/older-deployment
