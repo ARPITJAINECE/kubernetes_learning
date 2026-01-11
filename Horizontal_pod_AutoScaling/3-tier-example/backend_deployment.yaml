@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 2               # Should match HPA minReplicas
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: yourrepo/backend
+        resources:
+          requests:
+            cpu: "300m"
+            memory: "300Mi"
+          limits:
+            cpu: "800m"
+            memory: "800Mi"

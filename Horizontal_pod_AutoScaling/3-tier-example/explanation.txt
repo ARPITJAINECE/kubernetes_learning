@@ -1,0 +1,14 @@
+Scenario : 
+An e-commerce application runs on Kubernetes with three tiers: frontend, backend, and database. 
+Users access the website through the frontend, which sends requests to backend services. 
+The backend processes business logic and queries a MySQL database hosted on AWS RDS.
+
+
+
+
+Explanation :
+User traffic first reaches the frontend pods through a load balancer. 
+The frontend calls backend APIs for actions like login, browsing products, and placing orders. 
+Backend pods execute logic and fetch or store data in the database. 
+Horizontal Pod Autoscaler monitors CPU and memory usage of frontend and backend pods. When traffic increases, HPA adds more pods to handle load. 
+When traffic drops, it reduces pods, saving resources, while the database remains stable.

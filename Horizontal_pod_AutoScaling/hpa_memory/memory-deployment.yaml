@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mem-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mem-app
+  template:
+    metadata:
+      labels:
+        app: mem-app
+    spec:
+      containers:
+      - name: app
+        image: nginx
+        resources:
+          requests:
+            memory: "200Mi"   # HPA compares against this
+          limits:
+            memory: "500Mi"

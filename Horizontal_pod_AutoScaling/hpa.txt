@@ -1,0 +1,49 @@
+1️⃣ What is Horizontal Pod Autoscaling (HPA)?
+HPA automatically increases or decreases the number of Pods in a Deployment based on load (metrics like CPU or memory).
+
+
+Simple:
+More traffic → more Pods
+Less traffic → fewer Pods
+It scales horizontally (more Pods), not vertically (more CPU/RAM per Pod).
+
+
+
+
+2️⃣ Why HPA is used : 
+Without HPA:
+Too few Pods → app slow
+Too many Pods → wasted money
+
+HPA keeps:
+Just the right number of Pods
+
+
+
+
+3️⃣ How HPA decides to scale :
+HPA uses this formula:
+    desiredReplicas = currentReplicas × ( currentMetric / targetMetric )
+
+
+
+Metrics come from Metrics Server.
+
+
+
+Example:
+    Target CPU = 50%
+    Current CPU = 100%
+    Current Pods = 2
+    desired = 2 × (100 / 50) = 4
+        👉 Scale from 2 → 4 Pods
+
+
+
+
+4️⃣ What HPA watches : 
+HPA looks at:
+    CPU or Memory usage of Pods
+    NOT nodes
+    NOT containers directly
+    It averages all Pods
