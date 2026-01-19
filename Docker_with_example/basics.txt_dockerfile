@@ -1,0 +1,17 @@
+# 1. Specify the base image (OS + runtime)
+FROM <base-image>
+
+# 2. Set a working directory inside the container
+WORKDIR /app
+
+# 3. Copy required files from local machine to the image
+COPY <source> <destination>
+
+# 4. Run commands needed to set up the application
+RUN <command>
+
+# 5. Document the port the application listens on (optional)
+EXPOSE <port>
+
+# 6. Define the default command to start the application
+CMD ["executable", "argument1", "argument2"]

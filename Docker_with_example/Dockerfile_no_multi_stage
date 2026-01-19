@@ -1,0 +1,23 @@
+# 1. Use an official Python image as the base
+FROM python:3.13-alpine
+
+# 2. Set working directory inside the container
+WORKDIR /app
+
+# 3. Copy requirements file into the container
+COPY requirements.txt .
+
+# 4. Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 5. Copy application source code into the container
+COPY app.py .
+
+# 6. Document the port the Flask app listens on
+EXPOSE 5000
+
+# 7. Starting entrypoint of python app
+ENTRYPOINT ["python"]
+
+# 8. Name of starting entry file
+CMD ["app.py"]
