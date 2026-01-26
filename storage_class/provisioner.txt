@@ -1,0 +1,21 @@
+Provisioner is the component that actually creates the storage in the backend.
+
+
+Examples:
+    AWS EBS
+    Azure Disk
+    GCP Persistent Disk
+    NFS
+    CSI drivers
+
+Provisioner talks to:
+    Cloud APIs
+    Storage systems
+
+
+
+
+CSI provisioners : 
+1. ebs.csi.aws.com
+2. pd.csi.storage.gke.io
+3. disk.csi.azure.com

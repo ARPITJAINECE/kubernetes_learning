@@ -1,0 +1,66 @@
+# step 1 : create a storage class for ebs : 
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-gp3-storage   # Name used by PVC to select this class
+provisioner: ebs.csi.aws.com   # AWS EBS CSI driver (recommended)
+parameters:
+  type: gp3               # EBS volume type (gp3 = general purpose SSD)
+  fsType: ext4            # File system on the volume
+reclaimPolicy: Delete     # Delete EBS volume when PVC is deleted
+volumeBindingMode: WaitForFirstConsumer
+# Volume is created only after Pod is scheduled (best for AWS AZ handling)
+
+
+
+# step 2 : craete a PVC : 
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: app-pvc            # PVC name (used by Pod)
+spec:
+  accessModes:
+    - ReadWriteOnce        # EBS can be mounted to one node only
+  storageClassName: ebs-gp3-storage
+  # Tells Kubernetes to use the above StorageClass
+  resources:
+    requests:
+      storage: 10Gi       # Size of EBS volume to be created
+
+
+
+# step 3 : create a pod to use that pvc
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-pod
+spec:
+  containers:
+  - name: app-container
+    image: nginx
+    volumeMounts:
+    - name: app-storage
+      mountPath: /usr/share/nginx/html
+      # Path inside container where EBS volume is mounted
+
+  volumes:
+  - name: app-storage
+    persistentVolumeClaim:
+      claimName: app-pvc
+      # Pod uses the PVC created above
+
+
+
+
+# full flow :
+# 1. Pod is created
+# 2. Pod references PVC
+# 3. PVC references StorageClass
+# 4. StorageClass uses AWS EBS CSI provisioner
+# 5. EBS volume is created in AWS
+# 6. PV is created automatically
+# 7. PVC binds to PV
+# 8. Pod starts with persistent storage

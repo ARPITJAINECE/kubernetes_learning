@@ -1,0 +1,38 @@
+1. DirectoryOrCreate : 
+    Uses a directory from the host filesystem; if the directory does not exist, Kubernetes automatically creates it with default permissions before mounting.
+    ex : You mount /var/log/myapp. If it’s missing on the node, Kubernetes creates it so your container can write logs safely.
+
+
+2. Directory : 
+    Mounts an existing directory from the host; pod startup fails if the specified directory path does not already exist on the node.
+    ex : You mount /data/uploads. If the directory is missing, the pod won’t start, preventing accidental directory creation.
+
+
+3. FileOrCreate : 
+    Mounts a file from the host filesystem; if the file does not exist, Kubernetes creates an empty file before mounting.
+    ex : You mount /etc/app/config.yaml. If missing, Kubernetes creates a blank file so the container can populate it.
+
+
+4. File : 
+    Mounts an existing file from the host; pod startup fails if the specified file path does not already exist.
+    ex : You mount /etc/ssl/cert.pem. If the certificate file is missing, the pod fails immediately.
+
+
+5. Socket : 
+    Mounts a UNIX domain socket from the host filesystem, allowing containers to communicate with host services through local interprocess communication.
+    ex : Mounting /var/run/docker.sock lets a container talk directly to the Docker daemon on the node.
+
+
+6. CharDevice : 
+    Mounts an existing character device from the host, typically used for low-level hardware access such as serial ports or specialized devices.
+    ex : Mounting /dev/ttyUSB0 allows a container to communicate with a USB-connected serial device.
+
+
+7. BlockDevice : 
+    Mounts an existing block device from the host, enabling direct access to storage devices without a filesystem abstraction.
+    ex : Mounting /dev/sdb lets a container format or manage a raw disk directly.
+
+
+8. "" (empty/unset) : 
+    No type enforcement is applied; Kubernetes does not verify path existence or kind, leaving validation entirely to the container runtime.
+    ex : Useful for legacy setups, but risky—pods may start with incorrect or unintended host paths.

@@ -1,0 +1,22 @@
+🔹 Static provisioning (no StorageClass) : 
+    Flow:
+        Admin creates PV manually
+        User creates PVC
+        Kubernetes matches them
+
+    Problems:
+        Manual work
+        Slow
+        Hard to manage at scale
+
+
+
+🔹 Dynamic provisioning (with StorageClass) : 
+    Flow:
+        User creates PVC
+        StorageClass provisions PV automatically
+        PVC binds to PV
+
+    👉 No manual PV creation needed
+
+

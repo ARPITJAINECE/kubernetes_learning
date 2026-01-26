@@ -1,0 +1,23 @@
+storageClassName is the link between your PVC and a StorageClass.
+
+
+example : 
+
+1. StorageClass
+kind: StorageClass
+metadata:
+  name: fast-storage
+
+2. PVC
+spec:
+  storageClassName: fast-storage
+
+
+What happens internally : 
+    Step-by-step:
+        PVC is created
+        Kubernetes sees storageClassName: fast-storage
+        Finds StorageClass named fast-storage
+        Uses its provisioner
+        Creates a PV dynamically
+        Binds PVC to PV
