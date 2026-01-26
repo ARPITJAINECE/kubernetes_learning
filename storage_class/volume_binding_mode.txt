@@ -1,0 +1,25 @@
+This controls when the PV is created and bound.
+
+Types of volume binding modes : 
+
+1. Immediate (default) : 
+    PV is created immediately
+    Before Pod is scheduled
+
+    Problem:
+        Storage may be created in wrong zone
+        Pod may not fit on node
+
+
+2. WaitForFirstConsumer (recommended) : 
+    PV is created only after Pod is scheduled
+    Storage is created in correct zone
+
+    This avoids:
+        Cross-zone issues
+        Scheduling failures
+
+    👉 Always use this in cloud environments
+
+
+    

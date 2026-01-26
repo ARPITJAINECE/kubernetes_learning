@@ -1,0 +1,11 @@
+What happens to storage after PVC deletion?
+
+
+types : 
+1. delete : Disk is deleted
+2. retain : Disk is kept
+
+
+Production tip:
+    Databases → Retain
+    Temporary apps → Delete

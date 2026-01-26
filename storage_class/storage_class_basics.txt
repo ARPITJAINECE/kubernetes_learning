@@ -1,0 +1,17 @@
+A StorageClass defines how storage should be created dynamically.
+
+
+
+It tells Kubernetes:
+    Which storage system to use
+    How fast / durable it should be
+    When to create the volume
+
+
+
+With StorageClass : 
+    Storage is created on demand
+    No manual PV creation
+    Fully automated
+
+

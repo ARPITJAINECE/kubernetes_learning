@@ -1,0 +1,4 @@
+In storage class, we dont create PV, k8s creates it automatically : 
+    StorageClass + PVC = Kubernetes auto-creates the PV
+
+
