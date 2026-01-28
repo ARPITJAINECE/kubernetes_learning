@@ -1,0 +1,25 @@
+Key features of StatefulSet : 
+
+1. Stable Pod Identity : 
+    Pods are named like:
+        db-0
+        db-1
+        db-2
+    Names never change, even after restart.
+
+
+2. Stable Storage : 
+    Each pod gets its own PVC:
+        db-0 → pvc-db-0
+        db-1 → pvc-db-1
+    Pod restart ❌ does NOT delete data.
+
+
+3. Ordered Operations : 
+    Pods start one by one
+    Pods stop one by one
+    Scaling happens in order
+This is crucial for databases and clusters.
+
+
+

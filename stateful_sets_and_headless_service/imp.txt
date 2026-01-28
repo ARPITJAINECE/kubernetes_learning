@@ -1,0 +1,9 @@
+StatefulSet:
+- Creates pods
+- Gives them fixed names
+- Gives them fixed storage
+
+Headless Service:
+- Does NOT load balance
+- Does NOT create pods
+- Creates DNS for each pod

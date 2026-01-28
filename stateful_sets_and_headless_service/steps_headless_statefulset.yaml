@@ -1,0 +1,70 @@
+# step 1 : storageclass.yaml : Create StorageClass
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-gp3-storage          # Name referenced by PVC / StatefulSet
+provisioner: ebs.csi.aws.com     # AWS EBS CSI driver (must be installed)
+parameters:
+  type: gp3                      # EBS volume type
+  fsType: ext4                   # Filesystem on the volume
+reclaimPolicy: Delete            # Delete EBS volume when PVC is deleted
+volumeBindingMode: WaitForFirstConsumer
+# Volume is created only when Pod is scheduled (best practice)
+
+
+---
+# step 2 : headless-service.yaml : Create Headless Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql                    # Used in DNS: <pod>.<service>
+spec:
+  clusterIP: None                # Makes this service HEADLESS
+  selector:
+    app: mysql                   # Links service to Pods with label app=mysql
+  ports:
+  - port: 3306                   # MySQL port
+
+
+
+---
+# step 3 : statefulset.yaml : Create StatefulSet : 
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+spec:
+  serviceName: mysql             # MUST match Headless Service name
+  replicas: 3                    # Will create mysql-0, mysql-1, mysql-2
+
+  selector:
+    matchLabels:
+      app: mysql                 # Must match Pod template labels
+
+  template:
+    metadata:
+      labels:
+        app: mysql               # 🔗 Matches Service selector
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        ports:
+        - containerPort: 3306
+
+        volumeMounts:
+        - name: mysql-data
+          mountPath: /var/lib/mysql
+          # MySQL stores data here
+
+  volumeClaimTemplates:           # to create PVC on its own in dynamic provisioning of storages
+  - metadata:
+      name: mysql-data            # Base name for PVCs
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      storageClassName: ebs-gp3-storage
+      resources:
+        requests:
+          storage: 10Gi           # STORAGE SIZE PER POD

@@ -1,0 +1,26 @@
+What is a Headless Service?
+    A Headless Service is a Kubernetes Service that does NOT provide load balancing and does NOT have a virtual IP. 
+    It only provides DNS-based Pod discovery.
+
+
+
+
+Why Headless Service exists : 
+    Normal Services hide Pods behind a single IP.
+
+    But some applications:
+        Need to know each Pod individually
+        Need stable identity
+        Must talk to specific Pods
+        Break if traffic is randomly load-balanced
+    👉 Headless Service exists to expose Pods instead of hiding them.
+
+
+
+
+Headless Service working flow in 2 steps : 
+1. Service DNS → All Pod IPs
+2. Per-Pod DNS → Exact Pod
+
+
+

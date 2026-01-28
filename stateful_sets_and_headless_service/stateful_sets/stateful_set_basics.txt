@@ -1,0 +1,24 @@
+A StatefulSet is a Kubernetes workload used to run applications that need stable identity and stable storage.
+
+In short:
+    Pods have fixed names
+    Pods have fixed storage
+    Pods are created and deleted in order
+
+
+
+
+Examples:
+    Databases (MySQL, PostgreSQL)
+    Kafka
+    Zookeeper
+    Redis (master/replica)
+    Elasticsearch
+
+These apps need:
+    Stable hostname
+    Stable storage
+    Ordered startup/shutdown
+
+
+

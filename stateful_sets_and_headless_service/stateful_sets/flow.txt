@@ -1,0 +1,11 @@
+StatefulSet created
+     ↓
+Headless Service created
+     ↓
+Pod-0 created
+     ↓
+PVC for Pod-0 created
+     ↓
+Pod-1 created
+     ↓
+PVC for Pod-1 created
