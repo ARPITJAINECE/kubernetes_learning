@@ -1,0 +1,207 @@
+Internet
+  ↓
+Application Load Balancer (AWS)
+  ↓
+AWS Load Balancer Controller (EKS)
+  ↓
+Ingress (rules)
+  ↓
+Services
+  ↓
+Pods (microservices)
+
+
+1. STEP 1 — Install AWS Load Balancer Controller : 
+Ingress is only configuration; AWS Load Balancer Controller is the component that actually creates and manages the Application Load Balancer in AWS.
+
+1.1 : ServiceAccount (IAM ↔ Kubernetes bridge)
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: aws-load-balancer-controller
+  namespace: kube-system
+  annotations:
+    # This IAM role allows the controller pod to call AWS APIs
+    # (create ALB, listeners, target groups, register targets)
+    eks.amazonaws.com/role-arn: arn:aws:iam::<ACCOUNT_ID>:role/AWSLoadBalancerControllerRole
+
+1.2 : AWS Load Balancer Controller Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aws-load-balancer-controller
+  namespace: kube-system
+spec:
+  # Run two pods for high availability of the controller itself
+  replicas: 2
+  selector:
+    matchLabels:
+      app: aws-load-balancer-controller
+  template:
+    metadata:
+      labels:
+        app: aws-load-balancer-controller
+    spec:
+      # Attach the ServiceAccount so AWS permissions work
+      serviceAccountName: aws-load-balancer-controller
+      containers:
+      - name: controller
+        # Official AWS controller image
+        image: amazon/aws-load-balancer-controller:v2.6.0
+        args:
+          # Name of the EKS cluster
+          - --cluster-name=my-eks-cluster
+          # AWS region where ALB will be created
+          - --region=us-east-1
+
+
+
+2. STEP 2 — Create IngressClass (Ingress ↔ Controller linkage) : 
+(Kubernetes may have multiple ingress controllers; IngressClass tells which controller should process which Ingress.)
+
+2.1 : YAML — IngressClass : 
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: alb
+spec:
+  # This identifies AWS Load Balancer Controller
+  controller: ingress.k8s.aws/alb
+
+
+
+
+3. STEP 3 — Deploy Application Pods (Two Microservices) : 
+
+3.1 : Microservice A (/) : 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-root
+spec:
+  replicas: 2   # Multiple pods for HA
+  selector:
+    matchLabels:
+      app: root
+  template:
+    metadata:
+      labels:
+        app: root
+    spec:
+      containers:
+      - name: root-container
+        image: nginx
+
+
+3.2 : Microservice B (/user/login) : 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-login
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: login
+  template:
+    metadata:
+      labels:
+        app: login
+    spec:
+      containers:
+      - name: login-container
+        image: nginx
+
+
+
+
+4. STEP 4 — Create Services (Stable Networking Layer) : 
+(Pods are ephemeral; Services provide stable virtual IPs for routing traffic to pods.)
+
+4.1 : Root Service : 
+apiVersion: v1
+kind: Service
+metadata:
+  name: root-service
+spec:
+  selector:
+    app: root   # Targets root pods
+  ports:
+  - port: 80
+    targetPort: 80
+
+
+4.2 : Login Service : 
+apiVersion: v1
+kind: Service
+metadata:
+  name: login-service
+spec:
+  selector:
+    app: login
+  ports:
+  - port: 80
+    targetPort: 80
+
+
+
+5. STEP 5 — Create Ingress (THIS CREATES THE ALB) : 
+(Ingress defines how external HTTP traffic should be routed to internal services.)
+(🔥 This step triggers AWS ALB creation)
+
+5.1 : Ingress : 
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: abc-ingress
+  annotations:
+    # Make ALB public
+    alb.ingress.kubernetes.io/scheme: internet-facing
+
+    # Register pod IPs directly in target groups
+    alb.ingress.kubernetes.io/target-type: ip
+
+    # ALB listens on HTTP port 80
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
+
+spec:
+  # Link this Ingress to AWS Load Balancer Controller
+  ingressClassName: alb
+
+  rules:
+  - host: abc.com
+    http:
+      paths:
+      # Root path routing
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: root-service
+            port:
+              number: 80
+
+      # Login path routing
+      - path: /user/login
+        pathType: Prefix
+        backend:
+          service:
+            name: login-service
+            port:
+              number: 80
+
+
+
+
+6. STEP 6 — What AWS Automatically Creates
+
+    WHY this matters : Kubernetes intent is converted into AWS infrastructure automatically.
+
+    AWS creates:
+        ✅ Application Load Balancer
+        ✅ Listener on port 80
+        ✅ Path-based listener rules
+        ✅ Target groups
+        ✅ Registers pod IPs as targets
+
+    You never created these manually.
