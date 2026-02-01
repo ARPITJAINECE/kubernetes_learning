@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1   # RBAC API group
+kind: Role                                  # Namespace-scoped role
+metadata:
+  name: pod-reader                          # Name of the role
+  namespace: dev                            # Namespace where this role applies
+rules:
+  - apiGroups: [""]                         # Core API group (pods, services)
+    resources:
+      - pods
+      - services
+    verbs:
+      - get
+      - list
+      - watch

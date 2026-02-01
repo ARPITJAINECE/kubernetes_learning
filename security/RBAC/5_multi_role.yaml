@@ -1,0 +1,49 @@
+apiVersion: rbac.authorization.k8s.io/v1   # RBAC API group and version
+kind: Role                                # Namespace-scoped RBAC role
+
+metadata:
+  name: dep1-access-role                  # Name of the role
+  namespace: dev                          # Namespace where permissions apply
+
+rules:
+
+  # 1️⃣ APPS API GROUP - Deployment access
+  - apiGroups: ["apps"]                   # Apps API group
+    resources:
+      - deployments                       # Resource type: Deployment
+    resourceNames:
+      - dep1                              # Only this specific Deployment
+    verbs:
+      - get
+      - list
+      - watch
+
+  # 2️⃣ CORE API GROUP - Pods access
+  # NOTE: Cannot restrict pods to a specific Deployment using RBAC
+  - apiGroups: [""]                       # Core API group
+    resources:
+      - pods                              # Resource type: Pods
+    verbs:
+      - get
+      - list
+      - watch
+
+  # 3️⃣ CORE API GROUP - Service access
+  - apiGroups: [""]                       # Core API group
+    resources:
+      - services                          # Resource type: Services
+    resourceNames:
+      - dep1-service                      # Only this specific Service
+    verbs:
+      - get
+      - list
+      - watch
+
+  # 4️⃣ BATCH API GROUP - Job access
+  - apiGroups: ["batch"]                  # Batch API group
+    resources:
+      - jobs                              # Resource type: Jobs
+    verbs:
+      - get
+      - list
+      - watch

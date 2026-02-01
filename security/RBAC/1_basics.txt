@@ -1,0 +1,15 @@
+1️⃣ What Is RBAC in Kubernetes?
+“What actions is this identity allowed to perform?”
+RBAC decides: WHO can do WHAT on WHICH resources and WHERE
+
+
+
+2️⃣ Why RBAC Exists (The Problem It Solves) : 
+🔐 Least privilege access
+🧩 Namespace isolation
+📋 Auditable permissions
+🔁 Dynamic updates (no API restart)
+👥 Multi-user & multi-team clusters
+
+
+
