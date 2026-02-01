@@ -1,0 +1,37 @@
+Define : An API group is a logical collection of related Kubernetes API resources.
+
+Instead of dumping all resources into one huge API namespace, Kubernetes groups similar resources together.
+
+EX : 
+    API Server
+    ├── core/
+    ├── apps/
+    ├── batch/
+    ├── networking.k8s.io/
+    ├── rbac.authorization.k8s.io/
+    └── ...
+    Each group contains:
+        Resources (Pods, Deployments, Services, Roles, etc.)
+        Versions (v1, v1beta1, v1alpha1)
+
+
+
+Practical example : 
+🔸 apps :  Workload-related resources
+        Deployment
+        StatefulSet
+        DaemonSet
+        ReplicaSet
+            apps/v1
+
+
+
+YAML example : 
+1. Deployments : 
+    apiVersion: apps/v1
+    kind: Deployment
+2. Pods : 
+    apiVersion: v1
+    kind: Deployment
+
+
