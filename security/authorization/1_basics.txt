@@ -1,0 +1,31 @@
+1. What Is Authorization in Kubernetes? (Definition) : 
+Authorization answers this question: “Is this authenticated identity allowed to perform this action on this resource?”
+
+
+In Kubernetes, every request to the kube-apiserver goes through three gates:
+    1. Authentication → Who are you?
+    2. Authorization  → Are you allowed?
+    3. Admission     → Should this request be modified or rejected?
+
+
+2. What Exactly Does Authorization Decide?
+
+Every API request has attributes, such as:
+    Who: user / group / service account
+    What: resource (pod, node, secret)
+    Where: namespace or cluster-wide
+    Action: get, list, create, delete
+    API group: core, apps, batch, etc.
+
+Authorization checks these attributes and returns: ALLOW or DENY
+
+
+
+3. Modes in k8s Authorization : 
+    a. AlwaysAllow : Every request is allowed, default
+    b. AlwaysDeny : Every request is denied
+
+
+------> modern k8s defaults to RBAC <------
+
+
