@@ -1,0 +1,11 @@
+🔸 See current context : kubectl config current-context
+🔸 List all contexts : kubectl config get-contexts
+🔸 Switch to another cluster : kubectl config use-context <context-name>
+🔸 View entire kubeconfig (YAML) : kubectl config view
+🔸 View kubeconfig with secrets decoded : kubectl config view --raw
+🔸 Generate kubeconfig for an EKS cluster : aws eks update-kubeconfig --region us-east-1 --name qa-cluster
+🔸 Add kubeconfig for another cluster : (Same command, different cluster name) : aws eks update-kubeconfig --name prod-cluster
+🔸 Set default namespace for current context : kubectl config set-context --current --namespace=qa
+🔸 Delete a context : kubectl config delete-context <context-name>
+🔸 Delete a cluster entry : kubectl config delete-cluster <cluster-name>
+🔸 Delete a user entry : kubectl config delete-user <user-name>

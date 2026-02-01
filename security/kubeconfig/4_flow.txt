@@ -1,0 +1,11 @@
+kubectl
+↓
+reads kubeconfig
+↓
+finds current context
+↓
+gets cluster endpoint
+↓
+authenticates using IAM
+↓
+calls Kubernetes API
