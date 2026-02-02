@@ -1,0 +1,27 @@
+3️⃣ Core RBAC Building Blocks : 
+RBAC has two fundamental objects:
+
+🔹 1. Role : Defines permissions
+
+🔹 2. RoleBinding : Assigns those permissions to someone
+
+Think of it as:
+Role        → What you can do
+RoleBinding → Who gets it
+
+
+
+4️⃣ What a Role Actually Contains : 
+A Role is always: Namespace-scoped
+
+Defines:
+    API groups
+    Resources
+    Verbs
+
+A Role does NOT apply to users by itself.
+
+
+
+5. RoleBinding — Why It Exists
+    A RoleBinding answers: “Who should get this Role?”

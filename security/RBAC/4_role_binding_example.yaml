@@ -1,0 +1,16 @@
+apiVersion: rbac.authorization.k8s.io/v1   # RBAC API group and version
+kind: RoleBinding                          # Object that binds a Role to a subject
+
+metadata:
+  name: read-pods-binding                  # Name of the RoleBinding
+  namespace: dev                           # Namespace where this binding applies
+
+subjects:
+  - kind: User                             # Type of subject (User / Group / ServiceAccount)
+    name: alice                            # Name of the user
+    apiGroup: rbac.authorization.k8s.io    # API group for RBAC subjects
+
+roleRef:
+  kind: Role                               # Refers to a Role (namespace-scoped)
+  name: pod-reader                         # Name of the Role being bound
+  apiGroup: rbac.authorization.k8s.io      # API group where the Role exists

@@ -1,0 +1,54 @@
+1. Node Authorization : 
+    “What is a kubelet (node) allowed to do?”
+
+        Nodes are not trusted admins.
+
+    Each node:
+        Has its own identity
+
+    Should only access:
+        Its own pods
+        Its own secrets
+        Its own volumes
+
+
+
+2. Attribute-Based Access Control (ABAC) : 
+(⚠️ Important: ABAC is deprecated and rarely used today — but you must understand it conceptually.)
+
+    What Is ABAC?
+        ABAC authorizes requests based on: Attributes of the request
+
+        Example attributes:
+            User name
+            Group
+            Resource
+            Namespace
+            Verb
+
+
+
+3. Role-Based Access Control (RBAC) : 
+    RBAC answers:
+        “What role does this identity have?”
+
+    Instead of attributes:
+        You define roles
+        Bind users to roles
+
+    RBAC is:
+        Declarative
+        Scalable
+        Auditable
+        Default today
+
+
+
+4. Webhook Authorization (External) : 
+    What Is Webhook Authorization?
+        Webhook authorization means: Kubernetes asks an external service: “Should I allow this request?”
+
+    This is used when:
+        You already have enterprise IAM
+        You want custom logic
+        You integrate with external policy engines
