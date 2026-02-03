@@ -33,21 +33,35 @@ cd kubernetes_learning
 2. Read the YAMLs and apply them to a non-production namespace.
 3. Inspect resources with `kubectl get/describe/logs`, then delete what you created.
 
-Typical workflow:
+Learning workflow (create → observe → cleanup):
 
 ```bash
-# (optional) create a sandbox namespace
-kubectl create ns learning
+# 1) (recommended) create a sandbox namespace for all experiments
+kubectl create namespace learning
 
-# apply an example
-kubectl -n learning apply -f <file-or-folder>
+# 2) Create objects from an example (pick a YAML file or a whole folder)
+kubectl -n learning apply -f <path-to-yaml>
+# or:
+kubectl -n learning apply -f <path-to-folder>
 
-# observe
+# 3) Observe what you created
 kubectl -n learning get all
+kubectl -n learning describe <kind>/<name>
+kubectl -n learning get events --sort-by=.metadata.creationTimestamp
 
-# cleanup
-kubectl -n learning delete -f <file-or-folder>
+# 4) Debug (common commands)
+kubectl -n learning logs <pod-name> --all-containers --tail=200
+kubectl -n learning exec -it <pod-name> -- sh
+
+# 5) Cleanup (delete what you applied)
+kubectl -n learning delete -f <path-to-yaml-or-folder>
 ```
+
+Tips:
+
+- Start small: apply one YAML at a time, verify it works, then move to the next.
+- Keep one namespace per learning session (e.g. `learning`) so cleanup is easy.
+- Prefer `kubectl apply` for iterating and `kubectl delete` to reset.
 
 ## Repository map (topics)
 
