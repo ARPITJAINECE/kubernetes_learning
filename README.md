@@ -13,6 +13,20 @@ This repository is a hands-on Kubernetes learning workspace: short notes plus pr
 - `kubectl` configured to talk to that cluster
 - Optional: `helm` (only if you try ingress controller setups that use Helm)
 
+## Clone this repo
+
+```bash
+git clone git@github.com:ARPITJAINECE/kubernetes_learning.git
+cd kubernetes_learning
+```
+
+If you don’t have SSH set up for GitHub, use HTTPS:
+
+```bash
+git clone https://github.com/ARPITJAINECE/kubernetes_learning.git
+cd kubernetes_learning
+```
+
 ## How to use this repo
 
 1. Pick a topic folder (for example `pods/` or `services/`).
