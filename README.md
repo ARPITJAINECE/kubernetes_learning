@@ -9,9 +9,13 @@ This repository is a hands-on Kubernetes learning workspace: short notes plus pr
 
 ## Prerequisites
 
+- Basic Understanding of Docker as well
 - A Kubernetes cluster: `kind`, `minikube`, Docker Desktop Kubernetes, or a real cluster
 - `kubectl` configured to talk to that cluster
 - Optional: `helm` (only if you try ingress controller setups that use Helm)
+
+## Docker Architecture : 
+![Docker Architecture](Docker/docker_architecture.png)
 
 ## Clone this repo
 
