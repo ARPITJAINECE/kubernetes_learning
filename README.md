@@ -17,6 +17,10 @@ This repository is a hands-on Kubernetes learning workspace: short notes plus pr
 ## Docker Architecture : 
 ![Docker Architecture](Docker/docker_architecture.png)
 
+
+## Kubernetes Architecture : 
+![Kubernetes Architecture](Kubernetes/k8s_architecture.png)
+
 ## Clone this repo
 
 ```bash
