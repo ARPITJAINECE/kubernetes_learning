@@ -1,0 +1,15 @@
+Complete Flow Summary : 
+    Admin does:
+        Generate key & CSR
+        Create CSR object in Kubernetes
+        Approve CSR
+        Extract signed certificate
+        Create RBAC Role
+        Create RoleBinding
+
+    User does:
+        Receive cert + key + CA
+        Configure kubeconfig
+        Use context
+        Access cluster
+

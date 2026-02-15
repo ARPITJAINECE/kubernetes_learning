@@ -37,7 +37,14 @@ cd kubernetes_learning
 
 ## How to use this repo
 
-1. Pick a topic folder (for example `pods/` or `services/`).
+### Start here: Cluster access (authn/authz) + certificates
+
+If you’re new to Kubernetes access, start with `Kubernetes/00_access_auth_certificates/` first:
+
+- `Kubernetes/00_access_auth_certificates/vanilla_cluster/`: client certificate (CSR) flow + kubeconfig + RBAC
+- `Kubernetes/00_access_auth_certificates/eks/`: EKS authentication (IAM) + authorization (RBAC) flow
+
+1. Pick a topic folder (for example `Kubernetes/pods/` or `Kubernetes/services/`).
 2. Read the YAMLs and apply them to a non-production namespace.
 3. Inspect resources with `kubectl get/describe/logs`, then delete what you created.
 
@@ -75,16 +82,17 @@ Tips:
 
 Most folders are named after the concept they demonstrate:
 
-- Core building blocks: `basics/`, `pods/`, `replicas/`, `deployments/`
-- Networking: `services/`, `networking/`, `ingress_controller/`, `ingress_full_steps_example/`, `tls/`
-- Configuration: `config_maps/`, `secrets/`, `environment_variables/`
-- Workloads: `jobs/`, `cron_jobs/`, `daemon_sets/`, `stateful_sets_and_headless_service/`, `multi_container_pods/`, `static_pods/`
-- Scheduling: `node_selectors/`, `node_affinity/`, `taints_toleration/`, `priority_classes/`, `custom_schedulers/`
-- Resources & policy: `resources_requirements/`, `limit_ranges/`, `resource_quotas/`, `Horizontal_pod_AutoScaling/`, `Vertical_Pod_AutoScaling/`
-- Storage: `persistent_volumes/`, `storage_class/`
-- Security & access: `service_accounts/`, `security/`, `adminssion_controllers/`, `user_acounts/`
-- Rollouts: `rollouts_and_versioning/`
-- Docker practice: `Docker_with_example/`, `Docker_practice_todo_app/`, `basic_docker_entrypoint_and_cmd_and_k8s/`
+- Start here (access): `Kubernetes/00_access_auth_certificates/`
+- Core building blocks: `Kubernetes/basics/`, `Kubernetes/pods/`, `Kubernetes/replicas/`, `Kubernetes/deployments/`
+- Networking: `Kubernetes/services/`, `Kubernetes/networking/`, `Kubernetes/ingress_controller/`, `Kubernetes/ingress_full_steps_example/`, `Kubernetes/tls/`
+- Configuration: `Kubernetes/config_maps/`, `Kubernetes/secrets/`, `Kubernetes/environment_variables/`
+- Workloads: `Kubernetes/jobs/`, `Kubernetes/cron_jobs/`, `Kubernetes/daemon_sets/`, `Kubernetes/stateful_sets_and_headless_service/`, `Kubernetes/multi_container_pods/`, `Kubernetes/static_pods/`
+- Scheduling: `Kubernetes/node_selectors/`, `Kubernetes/node_affinity/`, `Kubernetes/taints_toleration/`, `Kubernetes/priority_classes/`, `Kubernetes/custom_schedulers/`
+- Resources & policy: `Kubernetes/resources_requirements/`, `Kubernetes/limit_ranges/`, `Kubernetes/resource_quotas/`, `Kubernetes/Horizontal_pod_AutoScaling/`, `Kubernetes/Vertical_Pod_AutoScaling/`
+- Storage: `Kubernetes/persistent_volumes/`, `Kubernetes/storage_class/`
+- Security & access: `Kubernetes/service_accounts/`, `Kubernetes/security/`, `Kubernetes/adminssion_controllers/`, `Kubernetes/user_acounts/`
+- Rollouts: `Kubernetes/rollouts_and_versioning/`
+- Docker practice: `Docker/Docker_with_example/`, `Docker/Docker_practice_todo_app/`, `Docker/basic_docker_entrypoint_and_cmd_and_k8s/`
 
 Note: some folder names contain typos but are kept as-is to avoid breaking paths.
 

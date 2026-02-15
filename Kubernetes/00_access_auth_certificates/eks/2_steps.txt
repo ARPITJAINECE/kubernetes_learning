@@ -1,0 +1,83 @@
+🛠 PART A — ADMIN SIDE (EKS) : 
+
+Step 1️⃣ Create IAM User (or Role) : 
+    You create an IAM identity in AWS.
+
+    In: Amazon Web Services → IAM
+
+    Create:
+        IAM User (for human)
+        OR
+        IAM Role (recommended for SSO)
+
+    CLI commands : 
+    1. aws iam create-user --user-name newdeveloper
+    2. aws iam attach-user-policy --user-name newdeveloper --policy-arn arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+
+
+Step 2️⃣ Map IAM User to Kubernetes RBAC : 
+    kubectl edit configmap aws-auth -n kube-system
+
+    edit this : 
+    data:
+        mapUsers: |
+            - userarn: arn:aws:iam::<ACCOUNT_ID>:user/newdeveloper
+            username: newdeveloper
+            groups:
+                - dev-group
+
+
+Step 3️⃣ Create Kubernetes Role : 
+    # dev-namespace-role.yaml
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: Role
+    metadata:
+    namespace: dev
+    name: pod-reader
+    rules:
+    - apiGroups: [""]  # core API group
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+
+    kubectl apply -f dev-namespace-role.yaml
+
+
+
+Step 4️⃣ Create RoleBinding : 
+    # dev-rolebinding.yaml
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: RoleBinding
+    metadata:
+    name: dev-read-access
+    namespace: dev
+    subjects:
+    - kind: Group
+    name: dev-group  # Must match aws-auth group
+    apiGroup: rbac.authorization.k8s.io
+    roleRef:
+    kind: Role
+    name: pod-reader
+    apiGroup: rbac.authorization.k8s.io
+
+    kubectl apply -f dev-rolebinding.yaml
+
+
+
+
+👤 PART B — USER SIDE (Developer Machine) : 
+
+Step 1️⃣ Install Tools : 
+    User must install:
+    AWS CLI
+    kubectl
+
+
+Step 2️⃣ Configure AWS Credentials : 
+aws configure
+
+
+
+Step 3️⃣ Update kubeconfig for EKS : 
+aws eks update-kubeconfig \
+  --region ap-south-1 \
+  --name my-eks-cluster

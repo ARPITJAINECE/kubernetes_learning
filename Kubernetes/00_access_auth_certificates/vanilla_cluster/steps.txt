@@ -1,0 +1,95 @@
+🛠 PART A — Admin Tasks (Cluster Side)
+👤 PART B — User Tasks (Local Machine)
+
+
+
+🛠 PART A — ADMIN SIDE CONFIGURATION : 
+Step 1: Generate Private Key for User : openssl genrsa -out newuser.key 2048
+
+Step 2: Create CSR (Certificate Signing Request) : openssl req -new -key newuser.key -out newuser.csr -subj "/CN=newuser/O=developers"
+
+Step 3: Create Kubernetes CSR Object : Now admin creates a CSR resource inside Kubernetes.
+# newuser-csr.yaml
+apiVersion: certificates.k8s.io/v1
+kind: CertificateSigningRequest
+metadata:
+  name: newuser-csr   # Name of CSR object
+spec:
+  request: <BASE64_CSR>  # Base64 encoded CSR file
+  signerName: kubernetes.io/kube-apiserver-client
+  usages:
+  - client auth       # This certificate is for client authentication
+
+                                        Convert CSR to base64:
+                                        cat newuser.csr | base64 | tr -d "\n"
+                                        Replace <BASE64_CSR> with output.
+    kubectl apply -f newuser-csr.yaml
+
+Step 4: Approve CSR : 
+kubectl get csr
+kubectl certificate approve newuser-csr
+
+
+Step 5: Extract Signed Certificate : kubectl get csr newuser-csr -o jsonpath='{.status.certificate}' | base64 -d > newuser.crt
+
+
+
+
+
+
+
+👤 PART B — USER SIDE CONFIGURATION : 
+Step 6: Configure kubeconfig : User creates a kubeconfig entry.
+        kubectl config set-cluster my-cluster \
+        --server=https://<API_SERVER_IP>:6443 \
+        --certificate-authority=ca.crt
+
+        kubectl config set-credentials newuser \
+        --client-certificate=newuser.crt \
+        --client-key=newuser.key
+
+        kubectl config set-context newuser-context \
+        --cluster=my-cluster \
+        --user=newuser
+
+
+        kubectl config use-context newuser-context
+
+
+Step 7 : Now RBAC for auth and authorization
+
+
+Step 8: Admin Creates Role : 
+# pod-reader-role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: pod-reader
+rules:
+- apiGroups: [""]   # "" means core API group
+  resources: ["pods"]
+  verbs: ["get", "watch", "list"]
+
+kubectl apply -f pod-reader-role.yaml
+
+
+Step 9: Bind Role to User : 
+# pod-reader-binding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: pod-reader-binding
+  namespace: default
+subjects:
+- kind: User
+  name: newuser        # Must match CN in certificate
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
+
+kubectl apply -f pod-reader-binding.yaml
+
+
