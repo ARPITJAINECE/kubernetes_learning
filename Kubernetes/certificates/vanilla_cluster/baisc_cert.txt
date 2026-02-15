@@ -1,0 +1,19 @@
+Kubernetes is a distributed system made of many components:
+    API Server
+    etcd
+    Controller Manager
+    Scheduler
+    kubelet
+    kubectl (users)
+
+All of them communicate over the network.
+
+
+
+Where Certificates Are Used in Kubernetes : 
+    kubelet → API server
+    kubectl → API server
+    API server → etcd
+    Control plane internal communication
+
+
