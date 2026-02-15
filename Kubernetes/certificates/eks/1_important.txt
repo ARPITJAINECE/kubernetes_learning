@@ -1,0 +1,12 @@
+EKS uses. : 
+🔐 AWS IAM for authentication
+🔑 RBAC for authorization
+
+
+
+Authentication Flow in EKS : 
+    User runs kubectl
+    kubectl calls AWS CLI to generate a temporary token
+    Token is signed using IAM credentials
+    API Server verifies token via AWS IAM
+    If valid → RBAC checks permissions
