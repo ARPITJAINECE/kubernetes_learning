@@ -1,0 +1,3 @@
+1. k auth can-i get pods ------ whether i have access or not?
+2. k auth whoami --------- who am i, as per cluster, which use i am
+3. k auth can-i get pods --as abc ------ whether abc user have access or not?
